@@ -12,7 +12,7 @@ Sub InMail(mail As Outlook.MailItem) '
     
     Dim objetoJson As Object
     'Dim cliente As New Client
-    Dim quot As New quote
+    Dim quot As New Quote
     Dim producto As New Product
     Dim formaleta As Formaletas
     Dim invernadero As Invernaderos
@@ -66,7 +66,7 @@ End Sub
 
 
 ' Funcion para reempalazar los campos que trae la plantilla del correo por los campos obtenidos del correo de la solicitud'
-Function ChangeBody(body As String, quot As quote) As String
+Function ChangeBody(body As String, quot As Quote) As String
     body = Replace(body, "<<clientname>>", quot.cliente.firstName)
     'body = Replace(body, "<<producto>>", quot.product)
     'body = Replace(body, "<<parameters>>", quot.parameters)
@@ -78,7 +78,7 @@ End Function
 
 
 ' Crea y enviar un correo con archivos adjuntos'
-Sub Mail_Quote(quot As quote)
+Sub Mail_Quote(quot As Quote)
     Dim OutApp As Object
     Dim OutMail As Object
     Set OutApp = CreateObject("Outlook.Application")   'Crea un objeto Outlook'

@@ -127,12 +127,12 @@ End Function
 '
 Private Function parseString(ByRef str As String, ByRef index As Long) As String
  
-    Dim quote   As String
+    Dim Quote   As String
     Dim char    As String
     Dim code    As String
      
     Call skipChar(str, index)
-    quote = Mid(str, index, 1)
+    Quote = Mid(str, index, 1)
     index = index + 1
     Do While index > 0 And index <= Len(str)
         char = Mid(str, index, 1)
@@ -165,7 +165,7 @@ Private Function parseString(ByRef str As String, ByRef index As Long) As String
                 parseString = parseString & ChrW(Val("&h" + code))
                 index = index + 4
             End Select
-        Case quote
+        Case Quote
             index = index + 1
             Exit Function
         Case Else

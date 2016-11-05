@@ -206,7 +206,7 @@ Public Function checkQuote(cliente_id As Integer, product_id As Integer) As Bool
 End Function
 
 
-Public Function CreateQuote(quot As quote) As Boolean
+Public Function CreateQuote(quot As Quote) As Boolean
     If checkConnect Then
         If Not checkQuote(quot.cliente.id, quot.producto.id) Then
             Dim query As String

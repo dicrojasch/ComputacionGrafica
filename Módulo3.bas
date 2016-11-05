@@ -193,8 +193,8 @@ Public Sub test()
     check = purch.addMaterial(lamina)
     Dim isCreated As Boolean
 
-    Dim quotf As New quote
-    Dim quoti As New quote
+    Dim quotf As New Quote
+    Dim quoti As New Quote
 
 
 
