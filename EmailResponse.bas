@@ -35,7 +35,7 @@ Sub InMail(mail As Outlook.MailItem)
             ' TODO : excel
                     
         End If
-        OpenInventorFile ("C:\Users\diego\Desktop\Example Inventor\12\toExporti.iam")
+        OpenInventorFile (path & pathExample)
         Call Mail_Quote(quot)
         quot.time_response = tiempo.EndTimer
         

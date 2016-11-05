@@ -66,6 +66,10 @@ Function parseJSON(strJson As String) As Object
     Set parseJSON = clsJson.parse(strJson)
 End Function
 
+Function FileExists(ByVal FileToTest As String) As Boolean
+   FileExists = (Dir(FileToTest) <> "")
+End Function
+
 Sub DeleteFile(ByVal FileToDelete As String)
    If FileExists(FileToDelete) Then
       SetAttr FileToDelete, vbNormal

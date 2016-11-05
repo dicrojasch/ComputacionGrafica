@@ -1,8 +1,11 @@
 Attribute VB_Name = "Paths"
 ' Rutas de los archivos
 Public Const path = "H:\Documentos\Diego\Unal\Materias\Computación Gráfica\Proyecto\"
+Public Const pathExample = "Ejemplo Inventor\toExporti.iam"
+'Public Const pathFormaleta = "Ejemplo Inventor\toExporti.iam"  ToDo
+'Public Const pathInvernadero = "Ejemplo Inventor\toExporti.iam"  ToDo
 Public Const pathPlantilla = "cotizacion.oft"
-Public Const pathFormaleta = "Ejemplo Inventor\toExporti.iam"
+
 Public Const modelo2D = "modelo2d.pdf"
 Public Const modelo3D = "modelo3d.pdf"
 

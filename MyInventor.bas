@@ -73,9 +73,9 @@ Public Sub ExportTo3D(Inv As Inventor.Application)
     ' Create a NameValueMap object as Options
     Dim oOptions As NameValueMap
     Set oOptions = Inv.TransientObjects.CreateNameValueMap
-  
+    DeleteFile (path & modelo3D)
     ' Options
-    oOptions.value("FileOutputLocation") = "H:\Documentos\Diego\Unal\Materias\Computación Gráfica\Proyecto\modelo3d.pdf"
+    oOptions.value("FileOutputLocation") = path & modelo3D
     oOptions.value("ExportAnnotations") = 1
     oOptions.value("ExportWokFeatures") = 1
     oOptions.value("GenerateAndAttachSTEPFile") = True
@@ -135,9 +135,9 @@ Public Sub ExportTo2D(Inv As Inventor.Application)
         'oOptions.Value("Custom_End_Sheet") = 4
 
     End If
-
+    DeleteFile (path & modelo2D)
     'Set the destination file name
-    oDataMedium.FileName = "H:\Documentos\Diego\Unal\Materias\Computación Gráfica\Proyecto\modelo2d.pdf"
+    oDataMedium.FileName = path & modelo2D
 
     'Publish document.
     Call PDFAddIn.SaveCopyAs(oDocument, oContext, oOptions, oDataMedium)
