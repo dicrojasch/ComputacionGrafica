@@ -257,3 +257,17 @@ Public Sub test()
 
 End Sub
 
+Sub testClient()
+Dim tiempo As New CalculateTime
+    tiempo.StartTimer
+    
+    Dim objetoJson As Object
+    'Dim cliente As New Client
+    Dim quot As New Quote
+    Dim producto As New Product
+    Dim formaleta As Formaletas
+    Dim invernadero As Invernaderos
+
+    Set quot.cliente = New Client
+    Set quot.producto = New Product
+End Sub

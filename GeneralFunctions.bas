@@ -65,3 +65,10 @@ Function parseJSON(strJson As String) As Object
     Set clsJson = New json
     Set parseJSON = clsJson.parse(strJson)
 End Function
+
+Sub DeleteFile(ByVal FileToDelete As String)
+   If FileExists(FileToDelete) Then
+      SetAttr FileToDelete, vbNormal
+      Kill FileToDelete
+   End If
+End Sub

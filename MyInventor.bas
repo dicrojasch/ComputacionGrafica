@@ -36,18 +36,18 @@ Public Sub OpenInventorFile(path As String)
     
     Dim current As Inventor.Document  'Se crea un documento tipo inventor'
     Set current = invApp.Documents.Open(path) 'Abre al archivo de inventor'
-    Call PublishTo3DPDF(invApp) 'Exporta un modelo 3D del archivo'
+    Call ExportTo2D(invApp) 'Exporta un modelo 3D del archivo'
     current.Close   'Despues de haber exportado el modelo se cierra el documento que abrimos'
     
-'    If Not inventorRunning Then
-'        invApp.Quit
-'        Set invApp = Nothing
-'    End If
+    If Not inventorRunning Then
+        invApp.Quit
+        Set invApp = Nothing
+    End If
 End Sub
 
 
 
-Public Sub PublishTo3DPDF(Inv As Inventor.Application)
+Public Sub ExportTo3D(Inv As Inventor.Application)
     ' Get the 3D PDF Add-In.
     Dim oPDFAddIn As ApplicationAddIn
     Dim oAddin As ApplicationAddIn
@@ -100,7 +100,7 @@ Public Sub PublishTo3DPDF(Inv As Inventor.Application)
 End Sub
 
 
-Public Sub PublishPDF(Inv As Inventor.Application)
+Public Sub ExportTo2D(Inv As Inventor.Application)
     ' Get the PDF translator Add-In.
     Dim PDFAddIn As TranslatorAddIn
     Set PDFAddIn = Inv.ApplicationAddIns.ItemById("{0AC6FD96-2F4D-42CE-8BE0-8AEA580399E4}")

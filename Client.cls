@@ -13,7 +13,7 @@ Public lastname As String
 Public email As String
 
 
-Public Sub JSONtoClient(objJson As Object)
+Public Sub JSONtoClient(objetoJson As Object)
     If Not objetoJson Is Nothing Then
         email = Split(objetoJson.Item("datosUsuario").Item("email"), " ")(0)
         firstName = objetoJson.Item("datosUsuario").Item("nombre")
