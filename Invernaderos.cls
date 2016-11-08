@@ -18,6 +18,20 @@ Private area As Double
 Private lado As Double
 
 
+Public Sub JSONtoInvernaderos(objJson As Object)
+    If (objJson.Item("medidas").Item("tipo") = "anchoYLargo") Then
+        Call setAnchoLargo(objJson.Item("medidas").Item("ancho"), objJson.Item("medidas").Item("largo"))
+    End If
+    
+    If (objJson.Item("medidas").Item("tipo") = "areaYLado") Then
+        Call setAreaLado(objJson.Item("medidas").Item("area"), objJson.Item("medidas").Item("lado"))
+    End If
+    
+    If (objJson.Item("medidas").Item("tipo") = "radio") Then
+        Call setRadio(objJson.Item("medidas").Item("radio"))
+    End If
+End Sub
+
 
 Public Sub setRadio(radio_ As Double)
     radio = radio_
@@ -88,17 +102,6 @@ End Function
 Public Function isAreaLado() As Boolean
     isAreaLado = is_AreaLado
 End Function
-
-
-Public Sub JSONtoInvernaderos(objJson As Object)
-    unidades = objJson.Item("medidas").Item("unidades")
-    If isRadio Then radio = objJson.Item("medidas").Item("radio")
-    If isAnchoLargo Then ancho = objJson.Item("medidas").Item("ancho")
-                         largo = objJson.Item("medidas").Item("largo")
-    
-    If isAreaLado Then area = objJson.Item("medidas").Item("area")
-                       lado = objJson.Item("medidas").Item("lado")
-End Sub
 
 Public Function toString() As String
     Dim temp() As Variant

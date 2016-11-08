@@ -36,7 +36,7 @@ Public Sub OpenInventorFile(path As String)
     
     Dim current As Inventor.Document  'Se crea un documento tipo inventor'
     Set current = invApp.Documents.Open(path) 'Abre al archivo de inventor'
-    Call ExportTo2D(invApp) 'Exporta un modelo 3D del archivo'
+    Call ExportTo3D(invApp) 'Exporta un modelo 3D del archivo'
     current.Close   'Despues de haber exportado el modelo se cierra el documento que abrimos'
     
     If Not inventorRunning Then
@@ -150,7 +150,7 @@ End Sub
 Public Sub testInventor()
     Dim test As New CalculateTime
     test.StartTimer
-    OpenInventorFile ("C:\Users\diego\Desktop\Example Inventor\12\toExporti.iam")
+    OpenInventorFile (path & pathExample)
     Debug.Print test.EndTimer
 End Sub
 

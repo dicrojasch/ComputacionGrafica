@@ -88,9 +88,8 @@ Sub Mail_Quote(quot As Quote)
         .body = ChangeBody(.body, quot)                         'Cambia el cuerpo de la plantilla donde se completa con los datos de la estructura quot'
         .Attachments.Add ActiveWorkbook.FullName        'Adjunta el correo la informacion especificada anteriormente'
         .Attachments.Add (path & "Plantilla de datos.xlsx")          'Adjunta un archivo'
-        .Attachments.Add (path & modelo2D)          'Adjunta un archivo'
+        .Attachments.Add (path & modelo3D)          'Adjunta un archivo'
         .Send                                                                           'envia el correo'
-        MsgBox "funciona: " & .Sent
     End With
     
     On Error GoTo 0
