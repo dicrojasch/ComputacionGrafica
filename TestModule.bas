@@ -259,5 +259,7 @@ End Sub
 
 Sub testClient()
     
-    createDirectory ("prueba1")
+    Call moveFile(path & "modelo2d.pdf", path & "prueba/modelo2d.pdf")
+    
+    
 End Sub

@@ -31,30 +31,30 @@ End Function
 Function getMonth() As String
     Dim my_month As String
     Select Case Month(Date)
-        Case 1
-            getMonth = "Enero"
-        Case 2
-            getMonth = "Febrero"
-        Case 3
-            getMonth = "Marzo"
-        Case 4
-            getMonth = "Abril"
-        Case 5
-            getMonth = "Mayo"
-        Case 6
-            getMonth = "Junio"
-        Case 7
-            getMonth = "Julio"
-        Case 8
-            getMonth = "Agosto"
-        Case 9
-            getMonth = "Septiembre"
-        Case 10
-            getMonth = "Octubre"
-        Case 11
-            getMonth = "Noviembre"
-        Case Else
-            getMonth = "Diciembre"
+    Case 1
+        getMonth = "Enero"
+    Case 2
+        getMonth = "Febrero"
+    Case 3
+        getMonth = "Marzo"
+    Case 4
+        getMonth = "Abril"
+    Case 5
+        getMonth = "Mayo"
+    Case 6
+        getMonth = "Junio"
+    Case 7
+        getMonth = "Julio"
+    Case 8
+        getMonth = "Agosto"
+    Case 9
+        getMonth = "Septiembre"
+    Case 10
+        getMonth = "Octubre"
+    Case 11
+        getMonth = "Noviembre"
+    Case Else
+        getMonth = "Diciembre"
     End Select
 End Function
 
@@ -71,22 +71,30 @@ Function parseJSON(strJson As String) As Object
 End Function
 
 Function FileExists(ByVal FileToTest As String) As Boolean
-   FileExists = (Dir(FileToTest) <> "")
+    FileExists = (Dir(FileToTest) <> "")
 End Function
 
 Sub DeleteFile(ByVal FileToDelete As String)
-   If FileExists(FileToDelete) Then
-      SetAttr FileToDelete, vbNormal
-      Kill FileToDelete
-   End If
-End Sub
-
-Sub createDirectory(directoryPath)
-    directoryPath = path & directoryPath
-    If Dir(directoryPath, vbDirectory) = "" Then
-        MkDir directoryPath
+    If FileExists(FileToDelete) Then
+        SetAttr FileToDelete, vbNormal
+        Kill FileToDelete
     End If
 End Sub
 
+Sub createDirectory(directoryPath)
+    If Dir(directoryPath, vbDirectory) = "" Then
+        MkDir directoryPath
+    Else
+        Debug.Print "La Carpeta " & directoryPath & " ya existe."
+    End If
+End Sub
 
-
+Sub moveFile(sourceFile, targetFile)
+    Set FSO = CreateObject("Scripting.FileSystemObject")
+    If FSO.FileExists(targetFile) Then
+        Debug.Print "El archivo " & directoryPath & " ya existe."
+    ElseIf FSO.FileExists(sourceFile) Then
+        FSO.moveFile sourceFile, targetFile
+    End If
+    Set FSO = Nothing
+End Sub

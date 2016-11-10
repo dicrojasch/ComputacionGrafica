@@ -52,8 +52,11 @@ Sub InMail(mail As Outlook.MailItem)
         If producto.id = 0 Then
             Debug.Print "No se creo producto"
         End If
-        
-        createDirectory ("Cotizaciones/" & Year(Date) & "/" & getMonth & "/" & quot.cliente.firstName & "_" & quot.cliente.firstName & "_P" & quot.producto.id)
+        Dim newDirectory As String
+        newDirectory = path & "Cotizaciones/" & Year(Date) & "/" & getMonth & "/" & quot.cliente.firstName & "_" & quot.cliente.firstName & "_P" & quot.producto.id
+        createDirectory (newDirectory)
+        Call moveFile(path & "modelo2d.pdf", newDirectory & "modelo2d.pdf")
+        Call moveFile(path & "Plantilla de datos.xlsx", newDirectory & "Plantilla de datos.xlsx")
         
         If Not database.CreateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
