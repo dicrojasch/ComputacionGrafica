@@ -82,11 +82,18 @@ Sub DeleteFile(ByVal FileToDelete As String)
 End Sub
 
 Sub createDirectory(directoryPath)
-    If Dir(directoryPath, vbDirectory) = "" Then
-        MkDir directoryPath
-    Else
-        Debug.Print "La Carpeta " & directoryPath & " ya existe."
-    End If
+    Dim folders() As String
+    folders = Split(directoryPath, "\")
+    Dim cumulative As String
+    cumulative = ""
+    For Each Folder In folders
+        cumulative = cumulative & Folder & "\"
+        If Dir(cumulative, vbDirectory) = "" Then
+            MkDir cumulative
+        Else
+            Debug.Print "La Carpeta " & cumulative & " ya existe."
+        End If
+    Next Folder
 End Sub
 
 Sub moveFile(sourceFile, targetFile)
@@ -95,6 +102,15 @@ Sub moveFile(sourceFile, targetFile)
         Debug.Print "El archivo " & directoryPath & " ya existe."
     ElseIf FSO.FileExists(sourceFile) Then
         FSO.moveFile sourceFile, targetFile
+    End If
+    Set FSO = Nothing
+End Sub
+
+Sub copyFile(sourceFile, targetFile)
+    Set FSO = CreateObject("Scripting.FileSystemObject")
+    If FSO.FileExists(sourceFile) Then
+        FSO.copyFile sourceFile, targetFile, True
+        Debug.Print "El archivo " & directoryPath & " ya existe."
     End If
     Set FSO = Nothing
 End Sub

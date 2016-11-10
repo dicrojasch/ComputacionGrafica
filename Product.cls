@@ -97,13 +97,19 @@ Public Sub JSONtoProduct(objJson As Object)
     End If
 End Sub
 
-
+Public Function mailDescription() As String
+    If Not isFormaleta And Not isInvernadero And Not isMaquinaria Then
+        Debug.Print "Error, no se ha inicializado el producto "
+    Else
+        mailDescription = "Producto: " & name & vbCrLf & " , Descripcion: " & vbCrLf & description
+    End If
+End Function
 
 Public Function toString() As String
     If Not isFormaleta And Not isInvernadero And Not isMaquinaria Then
         MsgBox "Se debe Inicializar el objeto con la funcion ''. "
     Else
-        toString = "Producto:   Nombre = " & name & " , Descripcion = --" & description & " --"
+        toString = "Producto: " & name & vbCrLf & "Descripcion: " & vbCrLf & description & "."
         If price <> 0 Then
             toString = toString & " , price = " & price
         End If

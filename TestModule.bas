@@ -259,7 +259,7 @@ End Sub
 
 Sub testClient()
     
-    Call moveFile(path & "modelo2d.pdf", path & "prueba/modelo2d.pdf")
-    
+    'Call moveFile(path & "modelo2d.pdf", path & "prueba/modelo2d.pdf")
+    Call createDirectory("H:\Documentos\Diego\Unal\Materias\Computación Gráfica\Proyecto\test")
     
 End Sub

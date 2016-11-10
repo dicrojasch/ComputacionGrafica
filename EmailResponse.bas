@@ -36,7 +36,7 @@ Sub InMail(mail As Outlook.MailItem)
             ' TODO : excel
                     
         End If
-        OpenInventorFile (path & pathExample)
+'        OpenInventorFile (path & pathExample)
         Call Mail_Quote(quot)
         quot.time_response = tiempo.EndTimer
                                     
@@ -53,10 +53,10 @@ Sub InMail(mail As Outlook.MailItem)
             Debug.Print "No se creo producto"
         End If
         Dim newDirectory As String
-        newDirectory = path & "Cotizaciones/" & Year(Date) & "/" & getMonth & "/" & quot.cliente.firstName & "_" & quot.cliente.firstName & "_P" & quot.producto.id
+        newDirectory = path & "Cotizaciones\" & Year(Date) & "\" & getMonth & "\" & quot.cliente.firstName & "_" & quot.cliente.lastname & "_P" & quot.producto.id & "\"
         createDirectory (newDirectory)
         Call moveFile(path & "modelo2d.pdf", newDirectory & "modelo2d.pdf")
-        Call moveFile(path & "Plantilla de datos.xlsx", newDirectory & "Plantilla de datos.xlsx")
+        Call copyFile(path & "Plantilla de datos.xlsx", newDirectory & "Plantilla de datos.xlsx")
         
         If Not database.CreateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
@@ -73,7 +73,7 @@ End Sub
 Function ChangeBody(body As String, quot As Quote) As String
     body = Replace(body, "<<clientname>>", quot.cliente.firstName & " " & quot.cliente.lastname)
     body = Replace(body, "<<producto>>", quot.producto.getName)
-    body = Replace(body, "<<parameters>>", quot.producto.toString)
+    body = Replace(body, "<<parameters>>", quot.producto.mailDescription)
     body = Replace(body, "<<date>>", getDate())
     body = Replace(body, "<<price>>", str(quot.getPrice))
     ChangeBody = body
