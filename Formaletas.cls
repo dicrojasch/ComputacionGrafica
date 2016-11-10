@@ -56,62 +56,6 @@ Public Sub InitFormaletas(altura_ As Double, diamInterno_ As Double, AltRanura_ 
     
 End Sub
 
-Public Function toString() As String
-    If isInit Then
-        toString = "Altura = " & altura & " , Diametro Interno = " & diamInterno & " , Altura ranura = " & AltRanura
-             If cPlate0 <> "" Then
-            toString = toString & " , Cover Plate a 0 = " & cPlate0
-        End If
-        If cPlate90 <> "" Then
-            toString = toString & " , Cover Plate a 90 = " & cPlate90
-        End If
-        If cPlate180 <> "" Then
-            toString = toString & " , Cover Plate a 180 = " & cPlate180
-        End If
-        If cPlate270 <> "" Then
-            toString = toString & " , Cover Plate a 270 = " & cPlate270
-        End If
-        If aFPlate0 <> "" Then
-            toString = toString & " , Auto Filler Plate a 0 = " & aFPlate0
-        End If
-        If aFPlate45 <> "" Then
-            toString = toString & " , Auto Filler Plate a 45 = " & aFPlate45
-        End If
-        If aFPlate90 <> "" Then
-            toString = toString & " , Auto Filler Plate a 90 = " & aFPlate90
-        End If
-        If aFPlate135 <> "" Then
-            toString = toString & " , Auto Filler Plate a 135 = " & aFPlate135
-        End If
-        If aFPlate180 <> "" Then
-            toString = toString & " , Auto Filler Plate a 180 = " & aFPlate180
-        End If
-        If aFPlate225 <> "" Then
-            toString = toString & " , Auto Filler Plate a 225 = " & aFPlate225
-        End If
-        If aFPlate270 <> "" Then
-            toString = toString & " , Auto Filler Plate a 270 = " & aFPlate270
-        End If
-        If aFPlate315 <> "" Then
-            toString = toString & " , Auto Filler Plate a 315 = " & aFPlate315
-        End If
-        If rVar0_90 Then
-            toString = toString & " , Ranuras de Varillas entre 0 y 90"
-        End If
-        If rVar90_180 Then
-            toString = toString & " , Ranuras de Varillas entre 90 y 180"
-        End If
-        If rVar180_270 Then
-            toString = toString & " , Ranuras de Varillas entre 180 y 270"
-        End If
-        If rVar270_0 Then
-            toString = toString & " , Ranuras de Varillas entre 270 y 0"
-        End If
-    Else
-        MsgBox "se debe inicializar el objeto con la funcion 'InitFormaletas'."
-    End If
-
-End Function
 
 Private Function getValueString(objJson As Object, value As String) As String
     getValueString = "N/A"
@@ -159,3 +103,58 @@ Public Sub JSONtoFormaleta(objJson As Object)
     
 End Sub
 
+Public Function toString() As String
+    If isInit Then
+        toString = "Altura = " & altura & vbCrLf & "Diametro Interno = " & diamInterno & vbCrLf & "Altura ranura = " & AltRanura & vbCrLf
+             If cPlate0 <> "" Then
+            toString = toString & "Cover Plate a 0 = " & cPlate0 & vbCrLf
+        End If
+        If cPlate90 <> "" Then
+            toString = toString & "Cover Plate a 90 = " & cPlate90 & vbCrLf
+        End If
+        If cPlate180 <> "" Then
+            toString = toString & "Cover Plate a 180 = " & cPlate180 & vbCrLf
+        End If
+        If cPlate270 <> "" Then
+            toString = toString & "Cover Plate a 270 = " & cPlate270 & vbCrLf
+        End If
+        If aFPlate0 <> "" Then
+            toString = toString & "Auto Filler Plate a 0 = " & aFPlate0 & vbCrLf
+        End If
+        If aFPlate45 <> "" Then
+            toString = toString & "Auto Filler Plate a 45 = " & aFPlate45 & vbCrLf
+        End If
+        If aFPlate90 <> "" Then
+            toString = toString & "Auto Filler Plate a 90 = " & aFPlate90 & vbCrLf
+        End If
+        If aFPlate135 <> "" Then
+            toString = toString & "Auto Filler Plate a 135 = " & aFPlate135 & vbCrLf
+        End If
+        If aFPlate180 <> "" Then
+            toString = toString & "Auto Filler Plate a 180 = " & aFPlate180 & vbCrLf
+        End If
+        If aFPlate225 <> "" Then
+            toString = toString & "Auto Filler Plate a 225 = " & aFPlate225 & vbCrLf
+        End If
+        If aFPlate270 <> "" Then
+            toString = toString & "Auto Filler Plate a 270 = " & aFPlate270 & vbCrLf
+        End If
+        If aFPlate315 <> "" Then
+            toString = toString & "Auto Filler Plate a 315 = " & aFPlate315 & vbCrLf
+        End If
+        If rVar0_90 Then
+            toString = toString & "Ranuras de Varillas entre 0 y 90" & vbCrLf
+        End If
+        If rVar90_180 Then
+            toString = toString & "Ranuras de Varillas entre 90 y 180" & vbCrLf
+        End If
+        If rVar180_270 Then
+            toString = toString & "Ranuras de Varillas entre 180 y 270" & vbCrLf
+        End If
+        If rVar270_0 Then
+            toString = toString & "Ranuras de Varillas entre 270 y 0" & vbCrLf
+        End If
+    Else
+        MsgBox "se debe inicializar el objeto con la funcion 'InitFormaletas'."
+    End If
+End Function
