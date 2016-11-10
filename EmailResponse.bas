@@ -1,5 +1,6 @@
 Attribute VB_Name = "EmailResponse"
 Sub InMail(mail As Outlook.MailItem)
+
     Dim tiempo As New CalculateTime
     tiempo.StartTimer
         
@@ -38,8 +39,7 @@ Sub InMail(mail As Outlook.MailItem)
         OpenInventorFile (path & pathExample)
         Call Mail_Quote(quot)
         quot.time_response = tiempo.EndTimer
-        
-            
+                                    
         Dim database As New GraficaDB
         Call database.ConnectDB(DBServer, schema, user, password)
 
@@ -52,6 +52,9 @@ Sub InMail(mail As Outlook.MailItem)
         If producto.id = 0 Then
             Debug.Print "No se creo producto"
         End If
+        
+        createDirectory ("Cotizaciones/" & Year(Date) & "/" & getMonth & "/" & quot.cliente.firstName & "_" & quot.cliente.firstName & "_P" & quot.producto.id)
+        
         If Not database.CreateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
         End If
@@ -65,7 +68,7 @@ End Sub
 
 ' Funcion para reempalazar los campos que trae la plantilla del correo por los campos obtenidos del correo de la solicitud'
 Function ChangeBody(body As String, quot As Quote) As String
-    body = Replace(body, "<<clientname>>", quot.cliente.firstName)
+    body = Replace(body, "<<clientname>>", quot.cliente.firstName & " " & quot.cliente.lastname)
     body = Replace(body, "<<producto>>", quot.producto.getName)
     body = Replace(body, "<<parameters>>", quot.producto.toString)
     body = Replace(body, "<<date>>", getDate())

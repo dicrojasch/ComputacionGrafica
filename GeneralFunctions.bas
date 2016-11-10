@@ -28,36 +28,40 @@ Error_GoTo:
     GoTo Exit_GoTo
 End Function
 
-' Funcion para generar una fecha con el formato, <<dia>> del mes de <<mes>> del <<anio>>'
-Function getDate() As String
+Function getMonth() As String
     Dim my_month As String
     Select Case Month(Date)
         Case 1
-            my_month = "Enero"
+            getMonth = "Enero"
         Case 2
-            my_month = "Febrero"
+            getMonth = "Febrero"
         Case 3
-            my_month = "Marzo"
+            getMonth = "Marzo"
         Case 4
-            my_month = "Abril"
+            getMonth = "Abril"
         Case 5
-            my_month = "Mayo"
+            getMonth = "Mayo"
         Case 6
-            my_month = "Junio"
+            getMonth = "Junio"
         Case 7
-            my_month = "Julio"
+            getMonth = "Julio"
         Case 8
-            my_month = "Agosto"
+            getMonth = "Agosto"
         Case 9
-            my_month = "Septiembre"
+            getMonth = "Septiembre"
         Case 10
-            my_month = "Octubre"
+            getMonth = "Octubre"
         Case 11
-            my_month = "Noviembre"
+            getMonth = "Noviembre"
         Case Else
-            my_month = "Diciembre"
+            getMonth = "Diciembre"
     End Select
-    getDate = Day(Date) & " de " & my_month & " del " & Year(Date)
+End Function
+
+
+' Funcion para generar una fecha con el formato, <<dia>> del mes de <<mes>> del <<anio>>'
+Function getDate() As String
+    getDate = Day(Date) & " de " & getMonth & " del " & Year(Date)
 End Function
 
 Function parseJSON(strJson As String) As Object
@@ -76,3 +80,13 @@ Sub DeleteFile(ByVal FileToDelete As String)
       Kill FileToDelete
    End If
 End Sub
+
+Sub createDirectory(directoryPath)
+    directoryPath = path & directoryPath
+    If Dir(directoryPath, vbDirectory) = "" Then
+        MkDir directoryPath
+    End If
+End Sub
+
+
+
