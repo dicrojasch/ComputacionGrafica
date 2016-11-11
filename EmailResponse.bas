@@ -36,13 +36,10 @@ Sub InMail(mail As Outlook.MailItem)
             Call addExcel.pasarExcelInvernadero(objetoJson)
                     
         End If
-'        OpenInventorFile (path & pathExample)
-        Call Mail_Quote(quot)
-        quot.time_response = tiempo.EndTimer
-                                    
+        
         Dim database As New GraficaDB
         Call database.ConnectDB(DBServer, schema, user, password)
-
+        
         Set quot.cliente = database.CreateClient(quot.cliente)
         If cliente.id = 0 Then
             Debug.Print "No se creo cliente"
@@ -52,15 +49,48 @@ Sub InMail(mail As Outlook.MailItem)
         If producto.id = 0 Then
             Debug.Print "No se creo producto"
         End If
+        
+        ' State 1, The client and product exists in database
+        quot.state = 1
+        quot.time_response = tiempo.EndTimer
+        If Not database.CreateQuote(quot) Then
+            Debug.Print "No se creo cotizacion"
+        End If
+        
+'        OpenInventorFile (path & pathExample)
+        ' ToDo Inventor operations
+                
+        ' State 2, the inventor files has been created
+        quot.state = 2
+        quot.time_response = tiempo.EndTimer
+        If Not database.UpdateQuote(quot) Then
+            Debug.Print "No se creo cotizacion"
+        End If
+        
+        
+        Call Mail_Quote(quot)
+        
+        ' State 3, the answer to the client has been sent
+        quot.state = 3
+        quot.time_response = tiempo.EndTimer
+        If Not database.UpdateQuote(quot) Then
+            Debug.Print "No se creo cotizacion"
+        End If
+        
         Dim newDirectory As String
         newDirectory = path & "Cotizaciones\" & Year(Date) & "\" & getMonth & "\" & quot.cliente.firstName & "_" & quot.cliente.lastname & "_P" & quot.producto.id & "\"
         createDirectory (newDirectory)
         Call moveFile(path & "modelo2d.pdf", newDirectory & "modelo2d.pdf")
         Call copyFile(path & "Plantilla de datos.xlsx", newDirectory & "Plantilla de datos.xlsx")
         
-        If Not database.CreateQuote(quot) Then
+        
+        ' State 4, The files has been moved to the appropriate folders ans the operation has finished correctly
+        quot.state = 4
+        quot.time_response = tiempo.EndTimer
+        If Not database.UpdateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
         End If
+
         'TODO : database material, provider, purchase
         Call database.closeConectionDB
         
