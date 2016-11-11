@@ -206,6 +206,31 @@ Public Function checkQuote(cliente_id As Integer, product_id As Integer) As Bool
 End Function
 
 
+Public Function UpdateQuote(quot As Quote) As Boolean
+   If checkConnect Then
+        If checkQuote(quot.cliente.id, quot.producto.id) Then
+            Dim query As String
+            Set records = New ADODB.Recordset
+            query = "SELECT * FROM grafica.quote WHERE cliente_id=" & quot.cliente.id & " AND product_id=" & quot.producto.id & ";"
+            records.Open query, GraficaConnect, adOpenDynamic, adLockOptimistic
+            records!Date = Date$
+            records!price = quot.getPrice
+            records!time_response = quot.time_response
+            records!state = quot.state
+            records.Update
+            records.Close
+            Set records = Nothing
+            CreateQuote = True
+        Else
+            Debug.Print "Error al actualizar cotizacion: El registro en cotizacion no existe."
+            CreateQuote = False
+        End If
+    Else
+        Debug.Print "No hay conexion con la base de datos."
+        CreateQuote = False
+    End If
+End Function
+
 Public Function CreateQuote(quot As Quote) As Boolean
     If checkConnect Then
         If Not checkQuote(quot.cliente.id, quot.producto.id) Then

@@ -329,7 +329,14 @@ End Sub
 
 Sub testClient()
     
-    'Call moveFile(path & "modelo2d.pdf", path & "prueba/modelo2d.pdf")
-    Call createDirectory("H:\Documentos\Diego\Unal\Materias\Computación Gráfica\Proyecto\test")
+    Dim a As New CalculateTime
+    a.StartTimer
+    Pause (2.5)
+    Debug.Print a.EndTimer
+    Pause (1)
+    Debug.Print a.EndTimer
+    Pause (2)
+    Debug.Print a.EndTimer
+    
     
 End Sub
