@@ -25,7 +25,7 @@ Sub InMail(mail As Outlook.MailItem)
             Set quot.producto = New Product
             Call quot.producto.setFormaleta(formaleta)
             quot.producto.price = 2000000
-            Call ExcelFormaleta.pasarAExcelFormaleta(formaleta)
+            Call addExcel.pasarAExcelFormaleta(formaleta)
             
         ElseIf "invernadero" = objetoJson.Item("formulario") Then
             
@@ -33,7 +33,7 @@ Sub InMail(mail As Outlook.MailItem)
             invernadero.JSONtoInvernaderos (objetoJson)
             quot.producto.setInvernadero (invernadero)
             quot.producto.price = 5000000
-            ' TODO : excel
+            Call addExcel.pasarExcelInvernadero(objetoJson)
                     
         End If
 '        OpenInventorFile (path & pathExample)
