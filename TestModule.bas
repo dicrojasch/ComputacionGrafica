@@ -1,4 +1,74 @@
 Attribute VB_Name = "TestModule"
+Sub InMail()
+
+    Dim tiempo As New CalculateTime
+    tiempo.StartTimer
+    Dim body As String
+    body = "{""formulario"":""formaleta"",""medidas"":{""unidades"":""mm"",""altura"":10,""diametroInterno"":10,""alturaRanura"":10},""opciones"":{""CP_0"":{""activado"":true,""texto"":""W16X26""},""RV_0_90"":{""activado"":true}},""datosUsuario"":{""nombre"":""diego"",""apellidos"":""rojas"",""email"":""dicrojasch@unal.edu.co""}}"
+    Dim objetoJson As Object
+    Dim cliente As New Client
+    Dim quot As New Quote
+    Dim producto As New Product
+    Dim formaleta As Formaletas
+    Dim invernadero As Invernaderos
+                
+    Set objetoJson = parseJSON(body)
+    Set quot.cliente = New Client
+    Call quot.cliente.JSONtoClient(objetoJson)
+    
+    quot.benefit = 0.2
+    
+    If Not objetoJson Is Nothing Then
+        If "formaleta" = objetoJson.Item("formulario") Then
+        
+            Set formaleta = New Formaletas
+            Call formaleta.JSONtoFormaleta(objetoJson)
+            Set quot.producto = New Product
+            Call quot.producto.setFormaleta(formaleta)
+            quot.producto.price = 2000000
+            Call addExcel.pasarAExcelFormaleta(formaleta)
+            
+        ElseIf "invernadero" = objetoJson.Item("formulario") Then
+            
+            Set invernadero = New Invernaderos
+            invernadero.JSONtoInvernaderos (objetoJson)
+            quot.producto.setInvernadero (invernadero)
+            quot.producto.price = 5000000
+            Call addExcel.pasarExcelInvernadero(objetoJson)
+                    
+        End If
+'        OpenInventorFile (path & pathExample)
+        Call Mail_Quote(quot)
+        quot.time_response = tiempo.EndTimer
+                                    
+        Dim database As New GraficaDB
+        Call database.ConnectDB(DBServer, schema, user, password)
+
+        Set quot.cliente = database.CreateClient(quot.cliente)
+        If cliente.id = 0 Then
+            Debug.Print "No se creo cliente"
+        End If
+        
+        Set quot.producto = database.CreateProduct(quot.producto)
+        If producto.id = 0 Then
+            Debug.Print "No se creo producto"
+        End If
+        Dim newDirectory As String
+        newDirectory = path & "Cotizaciones\" & Year(Date) & "\" & getMonth & "\" & quot.cliente.firstName & "_" & quot.cliente.lastname & "_P" & quot.producto.id & "\"
+        createDirectory (newDirectory)
+        Call moveFile(path & "modelo2d.pdf", newDirectory & "modelo2d.pdf")
+        Call copyFile(path & "Plantilla de datos.xlsx", newDirectory & "Plantilla de datos.xlsx")
+        
+        If Not database.CreateQuote(quot) Then
+            Debug.Print "No se creo cotizacion"
+        End If
+        'TODO : database material, provider, purchase
+        Call database.closeConectionDB
+        
+    End If
+        
+End Sub
+
 Public Sub test()
 '    Dim test As GraficaDB
 '    Set test = New GraficaDB

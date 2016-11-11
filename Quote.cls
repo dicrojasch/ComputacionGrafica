@@ -11,6 +11,7 @@ Public cliente As Client
 Public producto As Product
 Public time_response As Long 'milisegundos
 Public benefit As Double
+Public state As Integer
 
 Public Function getPrice() As Double
     getPrice = 0
