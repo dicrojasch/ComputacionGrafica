@@ -101,7 +101,7 @@ Public Function mailDescription() As String
     If Not isFormaleta And Not isInvernadero And Not isMaquinaria Then
         Debug.Print "Error, no se ha inicializado el producto "
     Else
-        mailDescription = "Producto: " & name & vbCrLf & " , Descripcion: " & vbCrLf & description
+        mailDescription = "Producto: " & name & vbCrLf & "Descripcion: " & vbCrLf & description
     End If
 End Function
 

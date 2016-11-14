@@ -58,7 +58,7 @@ Sub InMail(mail As Outlook.MailItem)
         End If
         
 '        OpenInventorFile (path & pathExample)
-        ' ToDo Inventor operations
+        ' TODO: Inventor operations
                 
         ' State 2, the inventor files has been created
         quot.state = 2
@@ -91,7 +91,7 @@ Sub InMail(mail As Outlook.MailItem)
             Debug.Print "No se creo cotizacion"
         End If
 
-        'TODO : database material, provider, purchase
+        'TODO: database material, provider, purchase
         Call database.closeConectionDB
         
     End If

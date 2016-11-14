@@ -220,14 +220,14 @@ Public Function UpdateQuote(quot As Quote) As Boolean
             records.Update
             records.Close
             Set records = Nothing
-            CreateQuote = True
+            UpdateQuote = True
         Else
             Debug.Print "Error al actualizar cotizacion: El registro en cotizacion no existe."
-            CreateQuote = False
+            UpdateQuote = False
         End If
     Else
         Debug.Print "No hay conexion con la base de datos."
-        CreateQuote = False
+        UpdateQuote = False
     End If
 End Function
 
