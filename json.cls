@@ -62,7 +62,7 @@ Private Function parseObject(ByRef str As String, ByRef index As Long) As Object
         Dim key As String
          
         ' add key/value pair
-        parseObject.Add key:=parseKey(str, index), Item:=parseValue(str, index)
+        parseObject.Add key:=parseKey(str, index), item:=parseValue(str, index)
          
     Loop
  
@@ -390,3 +390,4 @@ Private Function multiArray(aBD, iBC, sPS, ByRef sPT)   ' Array BoDy, Integer Ba
     End If
     Err.Clear
 End Function
+

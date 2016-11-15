@@ -18,3 +18,4 @@ Public Function EndTimer() As Long
     EndTimer = GetTickCount - mlngStart
     EndTimer = EndTimer / 1000
 End Function
+

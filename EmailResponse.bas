@@ -1,6 +1,6 @@
 Attribute VB_Name = "EmailResponse"
-Sub InMail(mail As Outlook.MailItem)
-
+Public Sub InMail(mail As Outlook.MailItem)
+    MsgBox "test"
     Dim tiempo As New CalculateTime
     tiempo.StartTimer
         
@@ -18,7 +18,7 @@ Sub InMail(mail As Outlook.MailItem)
     quot.benefit = 0.2
     
     If Not objetoJson Is Nothing Then
-        If "formaleta" = objetoJson.Item("formulario") Then
+        If "formaleta" = objetoJson.item("formulario") Then
         
             Set formaleta = New Formaletas
             Call formaleta.JSONtoFormaleta(objetoJson)
@@ -27,13 +27,14 @@ Sub InMail(mail As Outlook.MailItem)
             quot.producto.price = 2000000
             Call addExcel.pasarAExcelFormaleta(formaleta)
             
-        ElseIf "invernadero" = objetoJson.Item("formulario") Then
+        ElseIf "invernadero" = objetoJson.item("formulario") Then
             
             Set invernadero = New Invernaderos
-            invernadero.JSONtoInvernaderos (objetoJson)
-            quot.producto.setInvernadero (invernadero)
+            Call invernadero.JSONtoInvernaderos(objetoJson)
+            Set quot.producto = New Product
+            Call quot.producto.setInvernadero(invernadero)
             quot.producto.price = 5000000
-            Call addExcel.pasarExcelInvernadero(objetoJson)
+            Call addExcel.pasarExcelInvernadero(invernadero)
                     
         End If
         

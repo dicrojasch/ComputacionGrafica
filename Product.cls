@@ -67,9 +67,9 @@ End Function
 
 Public Function getAllMaterials() As Collection
     Set getAllMaterials = New Collection
-    For Each Item In materials.Items
-        getAllMaterials.Add Item
-    Next Item
+    For Each item In materials.Items
+        getAllMaterials.Add item
+    Next item
 End Function
 
 Public Function addMaterial(mat As Material) As Boolean
@@ -91,9 +91,9 @@ End Function
 
 Public Sub JSONtoProduct(objJson As Object)
     If Not objetoJson Is Nothing Then
-        email = Split(objetoJson.Item("datosUsuario").Item("email"), " ")(0)
-        firstName = objetoJson.Item("datosUsuario").Item("nombre")
-        lastname = objetoJson.Item("datosUsuario").Item("apellidos")
+        email = Split(objetoJson.item("datosUsuario").item("email"), " ")(0)
+        firstName = objetoJson.item("datosUsuario").item("nombre")
+        lastname = objetoJson.item("datosUsuario").item("apellidos")
     End If
 End Sub
 
@@ -101,7 +101,7 @@ Public Function mailDescription() As String
     If Not isFormaleta And Not isInvernadero And Not isMaquinaria Then
         Debug.Print "Error, no se ha inicializado el producto "
     Else
-        mailDescription = "Producto: " & name & vbCrLf & " , Descripcion: " & vbCrLf & description
+        mailDescription = "Producto: " & name & vbCrLf & "Descripcion: " & vbCrLf & description
     End If
 End Function
 
@@ -114,9 +114,10 @@ Public Function toString() As String
             toString = toString & " , price = " & price
         End If
         toString = toString & "; Materiales : "
-        For Each Item In materials.Items
-            toString = toString & ", " & Item
-        Next Item
+        For Each item In materials.Items
+            toString = toString & ", " & item
+        Next item
     End If
 End Function
+
 

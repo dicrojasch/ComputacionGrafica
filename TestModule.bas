@@ -1,5 +1,5 @@
 Attribute VB_Name = "TestModule"
-Sub InMail()
+Sub InMailTest()
 
     Dim tiempo As New CalculateTime
     tiempo.StartTimer
@@ -19,7 +19,7 @@ Sub InMail()
     quot.benefit = 0.2
     
     If Not objetoJson Is Nothing Then
-        If "formaleta" = objetoJson.Item("formulario") Then
+        If "formaleta" = objetoJson.item("formulario") Then
         
             Set formaleta = New Formaletas
             Call formaleta.JSONtoFormaleta(objetoJson)
@@ -28,7 +28,7 @@ Sub InMail()
             quot.producto.price = 2000000
             Call addExcel.pasarAExcelFormaleta(formaleta)
             
-        ElseIf "invernadero" = objetoJson.Item("formulario") Then
+        ElseIf "invernadero" = objetoJson.item("formulario") Then
             
             Set invernadero = New Invernaderos
             invernadero.JSONtoInvernaderos (objetoJson)
@@ -188,121 +188,121 @@ Public Sub test()
 
 '------------------------------- Ejemplo completo
     Dim calTime As New CalculateTime
-    Dim calTime2 As New CalculateTime
-    calTime.StartTimer
-    calTime2.StartTimer
-
-
-    Dim cliente As New Client
-    Dim getcli As New Client
-    cliente.firstName = "diego2"
-    cliente.lastname = "rojas"
-    cliente.email = "dicrojasch@unal.edu.co"
-
-    Dim formaleta As New Formaletas
-    Call formaleta.InitFormaletas(10, 10, 10)
-    formaleta.aFPlate0 = "012354678910"
-    formaleta.cPlate0 = "012354678910"
-    formaleta.cPlate90 = "012354678910"
-    formaleta.cPlate180 = "012354678910"
-    formaleta.cPlate270 = "012354678910"
-    formaleta.aFPlate0 = "012354678910"
-    formaleta.aFPlate45 = "012354678910"
-    formaleta.aFPlate90 = "012354678910"
-    formaleta.aFPlate135 = "012354678910"
-    formaleta.aFPlate180 = "012354678910"
-    formaleta.aFPlate225 = "012354678910"
-    formaleta.aFPlate270 = "012354678910"
-    formaleta.aFPlate315 = "012354678910"
-    formaleta.rVar0_90 = True
-    formaleta.rVar90_180 = True
-    formaleta.rVar180_270 = True
-    formaleta.rVar270_0 = True
-    Dim prodf As New Product
-    Call prodf.setFormaleta(formaleta)
-    prodf.price = 100000
-
-    Dim Invern As New Invernaderos
-    Call Invern.setAreaLado(10, 10)
-    Dim prodi As New Product
-    Call prodi.setInvernadero(Invern)
-    prodi.price = 320000
-
-    Dim getProd As New Product
-
-    Dim cemento As New Material
-    Dim varilla As New Material
-    Dim lamina As New Material
-    cemento.name = "Cemento"
-    cemento.description = "marca x"
-    cemento.quantity = 100
-    cemento.quantity_purch = 0
-    varilla.name = "varilla"
-    varilla.description = "marca y"
-    varilla.quantity = 100
-    varilla.quantity_purch = 0
-    lamina.name = "lamina"
-    lamina.description = "marca l"
-    lamina.quantity = 100
-    lamina.quantity_purch = 0
-    Dim check As Boolean
-    check = prodf.addMaterial(cemento)
-    check = prodf.addMaterial(varilla)
-    check = prodi.addMaterial(varilla)
-    check = prodi.addMaterial(lamina)
-
-    Dim prov As New Provider
-    prov.name = "Industrias Colombia S.A."
-    prov.email = "ind@ind.com"
-
-    Dim purch As New Purchases
-    purch.provider_name = prov.name
-    purch.description = "test"
-    check = purch.addMaterial(cemento)
-    check = purch.addMaterial(varilla)
-    check = purch.addMaterial(lamina)
-    Dim isCreated As Boolean
-
-    Dim quotf As New Quote
-    Dim quoti As New Quote
-
-
-
-    Dim test As GraficaDB
-    Set test = New GraficaDB
-    Call test.ConnectDB("127.0.0.1", "grafica", "root", "dcrojas.3124")
-    Set cliente = test.CreateClient(cliente)
-
-    isCreated = test.CreateMaterial(cemento)
-    isCreated = test.CreateMaterial(varilla)
-    isCreated = test.CreateMaterial(lamina)
-
-    isCreated = test.CreateProvider(prov)
-
-    isCreated = test.CreatePurchase(purch)
-
-    Set prodf = test.CreateProduct(prodf)
-    Set prodi = test.CreateProduct(prodi)
-
-    Set quotf.cliente = cliente
-    Set quotf.producto = prodf
-    quotf.benefit = 0.2
-
-    Set quoti.cliente = cliente
-    Set quoti.producto = prodi
-    quoti.benefit = 0.3
-    Debug.Print calTime2.EndTimer
-    Pause (2)
-
-
-    quotf.time_response = calTime.EndTimer
-    quoti.time_response = calTime.EndTimer
-    isCreated = test.CreateQuote(quotf)
-    isCreated = test.CreateQuote(quoti)
-
-    Call test.closeConectionDB
-
-    MsgBox "finalizo"
+'    Dim calTime2 As New CalculateTime
+'    calTime.StartTimer
+'    calTime2.StartTimer
+'
+'
+'    Dim cliente As New Client
+'    Dim getcli As New Client
+'    cliente.firstName = "diego2"
+'    cliente.lastname = "rojas"
+'    cliente.email = "dicrojasch@unal.edu.co"
+'
+'    Dim formaleta As New Formaletas
+'    Call formaleta.InitFormaletas(10, 10, 10)
+'    formaleta.aFPlate0 = "012354678910"
+'    formaleta.cPlate0 = "012354678910"
+'    formaleta.cPlate90 = "012354678910"
+'    formaleta.cPlate180 = "012354678910"
+'    formaleta.cPlate270 = "012354678910"
+'    formaleta.aFPlate0 = "012354678910"
+'    formaleta.aFPlate45 = "012354678910"
+'    formaleta.aFPlate90 = "012354678910"
+'    formaleta.aFPlate135 = "012354678910"
+'    formaleta.aFPlate180 = "012354678910"
+'    formaleta.aFPlate225 = "012354678910"
+'    formaleta.aFPlate270 = "012354678910"
+'    formaleta.aFPlate315 = "012354678910"
+'    formaleta.rVar0_90 = True
+'    formaleta.rVar90_180 = True
+'    formaleta.rVar180_270 = True
+'    formaleta.rVar270_0 = True
+'    Dim prodf As New Product
+'    Call prodf.setFormaleta(formaleta)
+'    prodf.price = 100000
+'
+'    Dim Invern As New Invernaderos
+'    Call Invern.setAreaLado(10, 10)
+'    Dim prodi As New Product
+'    Call prodi.setInvernadero(Invern)
+'    prodi.price = 320000
+'
+'    Dim getProd As New Product
+'
+'    Dim cemento As New Material
+'    Dim varilla As New Material
+'    Dim lamina As New Material
+'    cemento.name = "Cemento"
+'    cemento.description = "marca x"
+'    cemento.quantity = 100
+'    cemento.quantity_purch = 0
+'    varilla.name = "varilla"
+'    varilla.description = "marca y"
+'    varilla.quantity = 100
+'    varilla.quantity_purch = 0
+'    lamina.name = "lamina"
+'    lamina.description = "marca l"
+'    lamina.quantity = 100
+'    lamina.quantity_purch = 0
+'    Dim check As Boolean
+'    check = prodf.addMaterial(cemento)
+'    check = prodf.addMaterial(varilla)
+'    check = prodi.addMaterial(varilla)
+'    check = prodi.addMaterial(lamina)
+'
+'    Dim prov As New Provider
+'    prov.name = "Industrias Colombia S.A."
+'    prov.email = "ind@ind.com"
+'
+'    Dim purch As New Purchases
+'    purch.provider_name = prov.name
+'    purch.description = "test"
+'    check = purch.addMaterial(cemento)
+'    check = purch.addMaterial(varilla)
+'    check = purch.addMaterial(lamina)
+'    Dim isCreated As Boolean
+'
+'    Dim quotf As New Quote
+'    Dim quoti As New Quote
+'
+'
+'
+'    Dim test As GraficaDB
+'    Set test = New GraficaDB
+'    Call test.ConnectDB("127.0.0.1", "grafica", "root", "dcrojas.3124")
+'    Set cliente = test.CreateClient(cliente)
+'
+'    isCreated = test.CreateMaterial(cemento)
+'    isCreated = test.CreateMaterial(varilla)
+'    isCreated = test.CreateMaterial(lamina)
+'
+'    isCreated = test.CreateProvider(prov)
+'
+'    isCreated = test.CreatePurchase(purch)
+'
+'    Set prodf = test.CreateProduct(prodf)
+'    Set prodi = test.CreateProduct(prodi)
+'
+'    Set quotf.cliente = cliente
+'    Set quotf.producto = prodf
+'    quotf.benefit = 0.2
+'
+'    Set quoti.cliente = cliente
+'    Set quoti.producto = prodi
+'    quoti.benefit = 0.3
+'    Debug.Print calTime2.EndTimer
+'    Pause (2)
+'
+'
+'    quotf.time_response = calTime.EndTimer
+'    quoti.time_response = calTime.EndTimer
+'    isCreated = test.CreateQuote(quotf)
+'    isCreated = test.CreateQuote(quoti)
+'
+'    Call test.closeConectionDB
+'
+'    MsgBox "finalizo"
 '    Call test.ConnectDB("127.0.0.1", "grafica", "root", "dcrojas.3124")
 '    getcli = test.CreateClient(cliente)
 '    Call test.closeConectionDB
@@ -328,15 +328,7 @@ Public Sub test()
 End Sub
 
 Sub testClient()
-    
-    Dim a As New CalculateTime
-    a.StartTimer
-    Pause (2.5)
-    Debug.Print a.EndTimer
-    Pause (1)
-    Debug.Print a.EndTimer
-    Pause (2)
-    Debug.Print a.EndTimer
-    
-    
+    Dim database As New GraficaDB
+    Call database.ConnectDB(DBServer, schema, user, password)
+    Call database.closeConectionDB
 End Sub
