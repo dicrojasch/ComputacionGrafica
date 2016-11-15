@@ -29,9 +29,9 @@ End Function
 
 Public Function getAllMaterials() As Collection
     Set getAllMaterials = New Collection
-    For Each item In materials.Items
-        getAllMaterials.Add item
-    Next item
+    For Each Item In materials.Items
+        getAllMaterials.Add Item
+    Next Item
 End Function
 
 Public Function addMaterial(mat As Material) As Boolean
@@ -56,4 +56,3 @@ Public Function getTotalPrice() As Double
         getTotalPrice = getTotalPrice + mat.getTotalPrice()
     Next mat
 End Function
-

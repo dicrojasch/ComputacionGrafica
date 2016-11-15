@@ -26,13 +26,12 @@ End Function
 
 Public Sub JSONtoInvernaderos(objJson As Object)
     
-    unidades = objJson.item("medidas").item("unidades")
-    If isRadio Then radio = objJson.item("medidas").item("radio")
-    If isAnchoLargo Then ancho = objJson.item("medidas").item("ancho")
-                         largo = objJson.item("medidas").item("largo")
+    unidades = objJson.Item("medidas").Item("unidades")
+    If isRadio Then radio = objJson.Item("medidas").Item("radio")
+    If isAnchoLargo Then ancho = objJson.Item("medidas").Item("ancho")
+                         largo = objJson.Item("medidas").Item("largo")
     
-    If isAreaLado Then area = objJson.item("medidas").item("area")
-                       lado = objJson.item("medidas").item("lado")
+    If isAreaLado Then area = objJson.Item("medidas").Item("area")
+                       lado = objJson.Item("medidas").Item("lado")
     
 End Sub
-

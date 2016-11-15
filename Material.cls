@@ -32,4 +32,3 @@ End Function
 Public Function isUpdate() As Boolean
     isUpdate = is_Update
 End Function
-

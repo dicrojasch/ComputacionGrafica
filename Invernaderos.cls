@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'Invernaderos
 
 Public tipo As String
 Public ancho As Double
@@ -14,10 +15,10 @@ Public largo As Double
 Public alto As Double
 
 Public Sub JSONtoInvernaderos(objJson As Object)
-    tipo = objJson.item("medidas").item("tipo")   'para cambiar...
-    ancho = objJson.item("medidas").item("ancho") 'para cambiar...
-    largo = objJson.item("medidas").item("largo") 'para cambiar...
-    alto = objJson.item("medidas").item("alto")   'para cambiar...
+    tipo = objJson.Item("medidas").Item("tipo")   'para cambiar...
+    ancho = objJson.Item("medidas").Item("ancho") 'para cambiar...
+    largo = objJson.Item("medidas").Item("largo") 'para cambiar...
+    alto = objJson.Item("medidas").Item("alto")   'para cambiar...
 End Sub
 
 Public Function toString() As String
@@ -26,6 +27,5 @@ Public Function toString() As String
     toString = toString & "Largo: " & largo & vbCrLf
     toString = toString & "Alto: " & alto & vbCrLf
 End Function
-
 
 

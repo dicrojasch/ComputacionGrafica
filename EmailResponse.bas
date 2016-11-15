@@ -18,7 +18,7 @@ Public Sub InMail(mail As Outlook.MailItem)
     quot.benefit = 0.2
     
     If Not objetoJson Is Nothing Then
-        If "formaleta" = objetoJson.item("formulario") Then
+        If "formaleta" = objetoJson.Item("formulario") Then
         
             Set formaleta = New Formaletas
             Call formaleta.JSONtoFormaleta(objetoJson)
@@ -27,7 +27,7 @@ Public Sub InMail(mail As Outlook.MailItem)
             quot.producto.price = 2000000
             Call addExcel.pasarAExcelFormaleta(formaleta)
             
-        ElseIf "invernadero" = objetoJson.item("formulario") Then
+        ElseIf "invernadero" = objetoJson.Item("formulario") Then
             
             Set invernadero = New Invernaderos
             Call invernadero.JSONtoInvernaderos(objetoJson)
@@ -133,6 +133,7 @@ Sub Mail_Quote(quot As Quote)
     Set OutMail = Nothing
     Set OutApp = Nothing
 End Sub
+
 
 
 

@@ -7,7 +7,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-
 Private GraficaConnect As ADODB.Connection
 
 
@@ -195,7 +194,7 @@ Public Function checkQuote(cliente_id As Integer, product_id As Integer) As Bool
         Dim answer As Variant
         Set records = New ADODB.Recordset
         query = "Select * from quote where cliente_id = '" & cliente_id & "'And product_id = '" & product_id & "';"
-        records.Open query, GraficaConnect, adLockOptimistic
+        records.Open query, GraficaConnect, adOpenDynamic
         If Not records.EOF Then
             checkQuote = True
         Else
@@ -212,8 +211,8 @@ Public Function UpdateQuote(quot As Quote) As Boolean
         If checkQuote(quot.cliente.id, quot.producto.id) Then
             Dim query As String
             Set records = New ADODB.Recordset
-            query = "SELECT * FROM quote WHERE cliente_id=" & quot.cliente.id & " AND product_id=" & quot.producto.id & ";"
-            records.Open query, GraficaConnect, adOpenStatic, adLockOptimistic
+            query = "SELECT * FROM grafica.quote WHERE cliente_id=" & quot.cliente.id & " AND product_id=" & quot.producto.id & ";"
+            records.Open query, GraficaConnect, adOpenDynamic, adLockOptimistic
             records!Date = Date$
             records!price = quot.getPrice
             records!time_response = quot.time_response
@@ -494,7 +493,7 @@ Private Function CreatePurchaseMaterial(purchase As Purchases) As Boolean
                 For i = 1 To materials.Count
                     Set records = New ADODB.Recordset
                     records.Open query, GraficaConnect, adOpenDynamic, adLockOptimistic
-                    Set tmpMaterial = materials.item(i)
+                    Set tmpMaterial = materials.Item(i)
                     records.AddNew
                     records!purchases_id = purchase.id
                     records!material_name = tmpMaterial.name
