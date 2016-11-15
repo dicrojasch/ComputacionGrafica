@@ -60,8 +60,8 @@ End Sub
 Private Function getValueString(objJson As Object, value As String) As String
     getValueString = "N/A"
     If objJson.Exists(value) Then
-        If objJson.Item(value).Item("activado") Then
-            getValueString = objJson.Item(value).Item("texto")
+        If objJson.item(value).item("activado") Then
+            getValueString = objJson.item(value).item("texto")
         End If
     End If
 End Function
@@ -69,36 +69,36 @@ End Function
 Private Function getValueBool(objJson As Object, value As String) As String
     getValueBool = False
     If objJson.Exists(value) Then
-        If objJson.Item(value).Item("activado") Then
-            getValueBool = objJson.Item(value).Item("activado")
+        If objJson.item(value).item("activado") Then
+            getValueBool = objJson.item(value).item("activado")
         End If
     End If
 End Function
 
 Public Sub JSONtoFormaleta(objJson As Object)
         
-    unidades = objJson.Item("medidas").Item("unidades")
-    altura = objJson.Item("medidas").Item("altura")
-    diamInterno = objJson.Item("medidas").Item("diametroInterno")
-    AltRanura = objJson.Item("medidas").Item("alturaRanura")
+    unidades = objJson.item("medidas").item("unidades")
+    altura = objJson.item("medidas").item("altura")
+    diamInterno = objJson.item("medidas").item("diametroInterno")
+    AltRanura = objJson.item("medidas").item("alturaRanura")
     
-    cPlate0 = getValueString(objJson.Item("opciones"), "CP_0")
-    cPlate90 = getValueString(objJson.Item("opciones"), "CP_90")
-    cPlate180 = getValueString(objJson.Item("opciones"), "CP_180")
-    cPlate270 = getValueString(objJson.Item("opciones"), "CP_270")
-    aFPlate0 = getValueString(objJson.Item("opciones"), "AFP_0")
-    aFPlate45 = getValueString(objJson.Item("opciones"), "AFP_45")
-    aFPlate90 = getValueString(objJson.Item("opciones"), "AFP_90")
-    aFPlate135 = getValueString(objJson.Item("opciones"), "AFP_135")
-    aFPlate180 = getValueString(objJson.Item("opciones"), "AFP_180")
-    aFPlate225 = getValueString(objJson.Item("opciones"), "AFP_225")
-    aFPlate270 = getValueString(objJson.Item("opciones"), "AFP_270")
-    aFPlate315 = getValueString(objJson.Item("opciones"), "AFP_315")
+    cPlate0 = getValueString(objJson.item("opciones"), "CP_0")
+    cPlate90 = getValueString(objJson.item("opciones"), "CP_90")
+    cPlate180 = getValueString(objJson.item("opciones"), "CP_180")
+    cPlate270 = getValueString(objJson.item("opciones"), "CP_270")
+    aFPlate0 = getValueString(objJson.item("opciones"), "AFP_0")
+    aFPlate45 = getValueString(objJson.item("opciones"), "AFP_45")
+    aFPlate90 = getValueString(objJson.item("opciones"), "AFP_90")
+    aFPlate135 = getValueString(objJson.item("opciones"), "AFP_135")
+    aFPlate180 = getValueString(objJson.item("opciones"), "AFP_180")
+    aFPlate225 = getValueString(objJson.item("opciones"), "AFP_225")
+    aFPlate270 = getValueString(objJson.item("opciones"), "AFP_270")
+    aFPlate315 = getValueString(objJson.item("opciones"), "AFP_315")
     
-    rVar0_90 = getValueBool(objJson.Item("opciones"), "RV_0_90")
-    rVar90_180 = getValueBool(objJson.Item("opciones"), "RV_90_180")
-    rVar180_270 = getValueBool(objJson.Item("opciones"), "RV_180_270")
-    rVar270_0 = getValueBool(objJson.Item("opciones"), "RV_270_0")
+    rVar0_90 = getValueBool(objJson.item("opciones"), "RV_0_90")
+    rVar90_180 = getValueBool(objJson.item("opciones"), "RV_90_180")
+    rVar180_270 = getValueBool(objJson.item("opciones"), "RV_180_270")
+    rVar270_0 = getValueBool(objJson.item("opciones"), "RV_270_0")
     isInit = True
     
 End Sub
@@ -158,3 +158,4 @@ Public Function toString() As String
         MsgBox "se debe inicializar el objeto con la funcion 'InitFormaletas'."
     End If
 End Function
+
