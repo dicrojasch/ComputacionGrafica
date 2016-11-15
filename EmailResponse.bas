@@ -1,6 +1,6 @@
 Attribute VB_Name = "EmailResponse"
 Public Sub InMail(mail As Outlook.MailItem)
-    MsgBox "test"
+    
     Dim tiempo As New CalculateTime
     tiempo.StartTimer
         
@@ -133,7 +133,6 @@ Sub Mail_Quote(quot As Quote)
     Set OutMail = Nothing
     Set OutApp = Nothing
 End Sub
-
 
 
 
