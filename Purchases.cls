@@ -56,3 +56,16 @@ Public Function getTotalPrice() As Double
         getTotalPrice = getTotalPrice + mat.getTotalPrice()
     Next mat
 End Function
+
+Public Function toString() As String
+    toString = "Materiales:" & vbCrLf
+    If materials.Count > 0 Then
+        For Each Item In materials.Items
+            toString = toString & Item.name & " : " & Item.quantity_purch & vbCrLf
+        Next Item
+    Else
+        toString = toString & "No hay materiales asociados" & vbCrLf
+    End If
+
+End Function
+

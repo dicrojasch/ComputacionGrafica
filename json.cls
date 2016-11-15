@@ -329,7 +329,7 @@ Public Function toString(ByRef obj As Variant) As String
             Dim sEB
             toString = multiArray(obj, 1, "", sEB)
         Case Else
-            toString = Replace(obj, ",", ".")
+            toString = replace(obj, ",", ".")
     End Select
  
 End Function

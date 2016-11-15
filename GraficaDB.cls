@@ -410,7 +410,7 @@ Public Function CreateProvider(prov As Provider) As Boolean
     End If
 End Function
 
-Public Function CreatePurchase(purchase As Purchases) As Boolean
+Public Function CreatePurchase(purchase As Purchases) As purchase
     If checkConnect Then
         If checkProvider(purchase.provider_name) And purchase.existsMaterials() Then
             Dim query As String
@@ -429,14 +429,14 @@ Public Function CreatePurchase(purchase As Purchases) As Boolean
             If Not CreatePurchaseMaterial(purchase) Then
                 Debug.Print "Error al crear compra: No se pudo asociar la compra con materiales"
             End If
-            CreatePurchase = True
+            CreatePurchase = purchase
         Else
             Debug.Print "Error al crear compra: No se ha creado el proveedor o no hay materiales en la compra."
-            CreatePurchase = False
+            CreatePurchase = Nothing
         End If
     Else
         Debug.Print "No hay conexion con la base de datos."
-        CreatePurchase = False
+        CreatePurchase = Nothing
     End If
 End Function
 

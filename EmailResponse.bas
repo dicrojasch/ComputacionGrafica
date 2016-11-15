@@ -25,6 +25,7 @@ Public Sub InMail(mail As Outlook.MailItem)
             Set quot.producto = New Product
             Call quot.producto.setFormaleta(formaleta)
             quot.producto.price = 2000000
+                    ' To Do: Calculate price in product with materiales
             Call addExcel.pasarAExcelFormaleta(formaleta)
             
         ElseIf "invernadero" = objetoJson.Item("formulario") Then
@@ -34,6 +35,7 @@ Public Sub InMail(mail As Outlook.MailItem)
             Set quot.producto = New Product
             Call quot.producto.setInvernadero(invernadero)
             quot.producto.price = 5000000
+                    ' To Do: Calculate price in product with materiales
             Call addExcel.pasarExcelInvernadero(invernadero)
                     
         End If
@@ -53,6 +55,16 @@ Public Sub InMail(mail As Outlook.MailItem)
         
         ' State 1, The client and product exists in database
         quot.state = 1
+        
+        quot.time_response = tiempo.EndTimer
+        If Not database.CreateQuote(quot) Then
+            Debug.Print "No se creo cotizacion"
+        End If
+        
+        
+        Call Mail_Recieve(quot)
+        ' State 2, The receive answer has been sent to the client
+        quot.state = 2
         quot.time_response = tiempo.EndTimer
         If Not database.CreateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
@@ -60,9 +72,10 @@ Public Sub InMail(mail As Outlook.MailItem)
         
 '        OpenInventorFile (path & pathExample)
         ' ToDo Inventor operations
+        Call wordCotizacion(quot)
                 
-        ' State 2, the inventor files has been created
-        quot.state = 2
+        ' State 3, the files has been created
+        quot.state = 3
         quot.time_response = tiempo.EndTimer
         If Not database.UpdateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
@@ -71,8 +84,8 @@ Public Sub InMail(mail As Outlook.MailItem)
         
         Call Mail_Quote(quot)
         
-        ' State 3, the answer to the client has been sent
-        quot.state = 3
+        ' State 4, the answer to the client has been sent
+        quot.state = 4
         quot.time_response = tiempo.EndTimer
         If Not database.UpdateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
@@ -85,8 +98,8 @@ Public Sub InMail(mail As Outlook.MailItem)
         Call copyFile(path & "Plantilla de datos.xlsx", newDirectory & "Plantilla de datos.xlsx")
         
         
-        ' State 4, The files has been moved to the appropriate folders ans the operation has finished correctly
-        quot.state = 4
+        ' State 5, The files has been moved to the appropriate folders ans the operation has finished correctly
+        quot.state = 5
         quot.time_response = tiempo.EndTimer
         If Not database.UpdateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
@@ -102,17 +115,35 @@ End Sub
 
 ' Funcion para reempalazar los campos que trae la plantilla del correo por los campos obtenidos del correo de la solicitud'
 Function ChangeBody(body As String, quot As Quote) As String
-    body = Replace(body, "<<clientname>>", quot.cliente.firstName & " " & quot.cliente.lastname)
-    body = Replace(body, "<<producto>>", quot.producto.getName)
-    body = Replace(body, "<<parameters>>", quot.producto.mailDescription)
-    body = Replace(body, "<<date>>", getDate())
-    body = Replace(body, "<<price>>", str(quot.getPrice))
+    body = replace(body, "<<clientname>>", quot.cliente.firstName & " " & quot.cliente.lastname)
+    body = replace(body, "<<producto>>", quot.producto.getName)
+    body = replace(body, "<<parameters>>", quot.producto.mailDescription)
+    body = replace(body, "<<date>>", getDate())
+    body = replace(body, "<<price>>", str(quot.getPrice))
     ChangeBody = body
 End Function
 
+Sub Mail_Recieve(quot As Quote)
+    Dim OutApp As Object
+    Dim OutMail As Object
+    Set OutApp = CreateObject("Outlook.Application")
+    Set OutMail = OutApp.CreateItemFromTemplate(path & "Comprobante.oft")
+    On Error Resume Next
+    With OutMail
+        .To = quot.cliente.email
+        .Subject = "Cotizacion " & quot.producto.getName
+        .body = ChangeBody(.body, quot)
+        .Attachments.Add ActiveWorkbook.FullName
+        .Send
+    End With
+    
+    On Error GoTo 0
+    Set OutMail = Nothing
+    Set OutApp = Nothing
+End Sub
 
 
-' Crea y enviar un correo con archivos adjuntos'
+
 Sub Mail_Quote(quot As Quote)
     Dim OutApp As Object
     Dim OutMail As Object
@@ -124,6 +155,7 @@ Sub Mail_Quote(quot As Quote)
         .Subject = "Cotizacion " & quot.producto.getName         'Especifica el asunto del correo'
         .body = ChangeBody(.body, quot)                         'Cambia el cuerpo de la plantilla donde se completa con los datos de la estructura quot'
         .Attachments.Add ActiveWorkbook.FullName        'Adjunta el correo la informacion especificada anteriormente'
+        .Attachments.Add (path & "cotizacion" & quot.producto.id & ".docx")          'Adjunta un archivo'
         .Attachments.Add (path & "Plantilla de datos.xlsx")          'Adjunta un archivo'
         .Attachments.Add (path & modelo3D)          'Adjunta un archivo'
         .Send                                                                           'envia el correo'
@@ -133,7 +165,4 @@ Sub Mail_Quote(quot As Quote)
     Set OutMail = Nothing
     Set OutApp = Nothing
 End Sub
-
-
-
 

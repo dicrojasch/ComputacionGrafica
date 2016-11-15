@@ -14,9 +14,6 @@ Public quantity As Integer
 Public quantity_purch As Integer
 Private is_Update As Boolean
 
-
-
-
 Public Function getTotalPrice() As Double
     getTotalPrice = quantity_purch * price
 End Function

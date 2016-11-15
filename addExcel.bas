@@ -82,3 +82,45 @@ Sub pasarExcelInvernadero(invernadero As Invernaderos)
     excelApp.ActiveWorkbook.Close
 End Sub
 
+Private Sub SearchReplace(search As String, replace As String, wordApp As Word.Application)
+    Dim FindObject As Word.Find
+    Set FindObject = wordApp.Selection.Find
+    With FindObject
+        .ClearFormatting
+        .Text = search
+        .Replacement.ClearFormatting
+        .Replacement.Text = replace
+    End With
+    Call FindObject.Execute(replace:=Word.WdReplace.wdReplaceAll)
+End Sub
+
+Sub ShowSelection(purchase As Purchases)
+
+    Dim wordApp As Word.Application
+    Set wordApp = New Word.Application
+    wordApp.Documents.Open (path & "Plantilla Pedir Materiales.dotm")
+    
+    Call SearchReplace("<<fecha>>", getDate(), wordApp)
+    Call SearchReplace("<<proveedor>>", purchase.provider_name, wordApp)
+    Call SearchReplace("<<materiales>>", purchase.toString, wordApp)
+    
+    wordApp.ActiveDocument.SaveAs2 (path & "compra" & purchase.id & ".docx")
+    wordApp.ActiveDocument.Close
+    
+End Sub
+Sub wordCotizacion(quot As Quote)
+
+    Dim wordApp As Word.Application
+    Set wordApp = New Word.Application
+    wordApp.Documents.Open (path & "cotizacion.dotm")
+    
+    Call SearchReplace("<<date>>", getDate(), wordApp)
+    Call SearchReplace("<<clientname>>", quot.cliente.firstName & " " & quot.cliente.lastname, wordApp)
+    Call SearchReplace("<<producto>>", quot.producto.getName, wordApp)
+    Call SearchReplace("<<parameters>>", quot.producto.toString, wordApp)
+    Call SearchReplace("<<price>>", quot.producto.price, wordApp)
+    ' TO DO funcion para calcular product.price
+    wordApp.ActiveDocument.SaveAs2 (path & "cotizacion" & quot.producto.id & ".docx")
+    wordApp.ActiveDocument.Close
+    
+End Sub
