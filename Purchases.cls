@@ -29,9 +29,9 @@ End Function
 
 Public Function getAllMaterials() As Collection
     Set getAllMaterials = New Collection
-    For Each Item In materials.Items
-        getAllMaterials.Add Item
-    Next Item
+    For Each item In materials.Items
+        getAllMaterials.Add item
+    Next item
 End Function
 
 Public Function addMaterial(mat As Material) As Boolean
@@ -60,9 +60,9 @@ End Function
 Public Function toString() As String
     toString = "Materiales:" & vbCrLf
     If materials.Count > 0 Then
-        For Each Item In materials.Items
-            toString = toString & Item.name & " : " & Item.quantity_purch & vbCrLf
-        Next Item
+        For Each item In materials.Items
+            toString = toString & item.name & " : " & item.quantity_purch & vbCrLf
+        Next item
     Else
         toString = toString & "No hay materiales asociados" & vbCrLf
     End If

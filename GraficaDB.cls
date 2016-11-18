@@ -410,7 +410,7 @@ Public Function CreateProvider(prov As Provider) As Boolean
     End If
 End Function
 
-Public Function CreatePurchase(purchase As Purchases) As purchase
+Public Function CreatePurchase(purchase As Purchases) As Purchases
     If checkConnect Then
         If checkProvider(purchase.provider_name) And purchase.existsMaterials() Then
             Dim query As String
@@ -493,7 +493,7 @@ Private Function CreatePurchaseMaterial(purchase As Purchases) As Boolean
                 For i = 1 To materials.Count
                     Set records = New ADODB.Recordset
                     records.Open query, GraficaConnect, adOpenDynamic, adLockOptimistic
-                    Set tmpMaterial = materials.Item(i)
+                    Set tmpMaterial = materials.item(i)
                     records.AddNew
                     records!purchases_id = purchase.id
                     records!material_name = tmpMaterial.name

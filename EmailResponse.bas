@@ -18,7 +18,7 @@ Public Sub InMail(mail As Outlook.MailItem)
     quot.benefit = 0.2
     
     If Not objetoJson Is Nothing Then
-        If "formaleta" = objetoJson.Item("formulario") Then
+        If "formaleta" = objetoJson.item("formulario") Then
         
             Set formaleta = New Formaletas
             Call formaleta.JSONtoFormaleta(objetoJson)
@@ -28,7 +28,7 @@ Public Sub InMail(mail As Outlook.MailItem)
                     ' To Do: Calculate price in product with materiales
             Call addExcel.pasarAExcelFormaleta(formaleta)
             
-        ElseIf "invernadero" = objetoJson.Item("formulario") Then
+        ElseIf "invernadero" = objetoJson.item("formulario") Then
             
             Set invernadero = New Invernaderos
             Call invernadero.JSONtoInvernaderos(objetoJson)
@@ -155,8 +155,8 @@ Sub Mail_Quote(quot As Quote)
         .Subject = "Cotizacion " & quot.producto.getName         'Especifica el asunto del correo'
         .body = ChangeBody(.body, quot)                         'Cambia el cuerpo de la plantilla donde se completa con los datos de la estructura quot'
         .Attachments.Add ActiveWorkbook.FullName        'Adjunta el correo la informacion especificada anteriormente'
-        .Attachments.Add (path & "cotizacion" & quot.producto.id & ".docx")          'Adjunta un archivo'
-        .Attachments.Add (path & "Plantilla de datos.xlsx")          'Adjunta un archivo'
+        .Attachments.Add (path & "cotizacion" & quot.producto.id & ".pdf")          'Adjunta un archivo'
+        .Attachments.Add (path & "Parametros_Invernaderos.xlsm")          'Adjunta un archivo'
         .Attachments.Add (path & modelo3D)          'Adjunta un archivo'
         .Send                                                                           'envia el correo'
     End With

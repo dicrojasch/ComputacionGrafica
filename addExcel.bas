@@ -56,10 +56,8 @@ Sub pasarAExcelFormaleta(formaleta As Formaletas)
         Call añadirACelda2(excelApp, formaleta.rVar180_270, 18)
         Call añadirACelda2(excelApp, formaleta.rVar270_0, 19)
         
-    
-    excelApp.Visible = True
     excelApp.ActiveWorkbook.Save
-    excelApp.ActiveWorkbook.Close
+    excelApp.Quit
     
 End Sub
 Sub pasarExcelInvernadero(invernadero As Invernaderos)
@@ -77,9 +75,9 @@ Sub pasarExcelInvernadero(invernadero As Invernaderos)
         
     End With
     
-    excelApp.Visible = True
     excelApp.ActiveWorkbook.Save
-    excelApp.ActiveWorkbook.Close
+    excelApp.Quit
+    
 End Sub
 
 Private Sub SearchReplace(search As String, replace As String, wordApp As Word.Application)
@@ -90,6 +88,7 @@ Private Sub SearchReplace(search As String, replace As String, wordApp As Word.A
         .Text = search
         .Replacement.ClearFormatting
         .Replacement.Text = replace
+        
     End With
     Call FindObject.Execute(replace:=Word.WdReplace.wdReplaceAll)
 End Sub
@@ -105,22 +104,33 @@ Sub ShowSelection(purchase As Purchases)
     Call SearchReplace("<<materiales>>", purchase.toString, wordApp)
     
     wordApp.ActiveDocument.SaveAs2 (path & "compra" & purchase.id & ".docx")
-    wordApp.ActiveDocument.Close
+    wordApp.Quit
     
 End Sub
 Sub wordCotizacion(quot As Quote)
 
     Dim wordApp As Word.Application
     Set wordApp = New Word.Application
-    wordApp.Documents.Open (path & "cotizacion.dotm")
+    wordApp.Documents.Add (path & "cotizacion.dotm")
     
     Call SearchReplace("<<date>>", getDate(), wordApp)
     Call SearchReplace("<<clientname>>", quot.cliente.firstName & " " & quot.cliente.lastname, wordApp)
     Call SearchReplace("<<producto>>", quot.producto.getName, wordApp)
-    Call SearchReplace("<<parameters>>", quot.producto.toString, wordApp)
+    Call stringWord(wordApp, quot.producto.getDescription)
     Call SearchReplace("<<price>>", quot.producto.price, wordApp)
     ' TO DO funcion para calcular product.price
-    wordApp.ActiveDocument.SaveAs2 (path & "cotizacion" & quot.producto.id & ".docx")
-    wordApp.ActiveDocument.Close
+    wordApp.Visible = True
     
+    wordApp.ActiveDocument.SaveAs2 FileName:=path & "cotizacion" & quot.producto.id, FileFormat:=wdFormatPDF
+    wordApp.ActiveDocument.Saved = True
+    
+    wordApp.Quit
+    
+End Sub
+Sub stringWord(wordApp As Word.Application, toString As String)
+    
+    wordApp.Selection.Move 2, 68
+    wordApp.Visible = True
+    MsgBox ("fgdfgh")
+    wordApp.Selection.TypeText (toString)
 End Sub

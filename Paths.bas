@@ -1,6 +1,6 @@
 Attribute VB_Name = "Paths"
 ' Rutas de los archivos
-Public Const path = "H:\Documentos\Diego\Unal\Materias\Computación Gráfica\Proyecto\"
+Public Const path = "C:\Users\GRAFICA\Documents\Proyecto\"
 Public Const pathExample = "Ejemplo Inventor\toExporti.iam"
 'Public Const pathFormaleta = "Ejemplo Inventor\toExporti.iam"  ToDo
 'Public Const pathInvernadero = "Ejemplo Inventor\toExporti.iam"  ToDo
@@ -20,3 +20,4 @@ Public Const DBServer = "162.243.41.175"       ' Servidor Remoto
 Public Const schema = "compgrafica"          ' Schema en el servidor remoto
 Public Const user = "compgrafica"              ' Usuario remoto
 Public Const password = "compgrafica20162"     ' Password remoto
+

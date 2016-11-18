@@ -15,8 +15,8 @@ Public email As String
 
 Public Sub JSONtoClient(objetoJson As Object)
     If Not objetoJson Is Nothing Then
-        email = Split(objetoJson.Item("datosUsuario").Item("email"), " ")(0)
-        firstName = objetoJson.Item("datosUsuario").Item("nombre")
-        lastname = objetoJson.Item("datosUsuario").Item("apellidos")
+        email = Split(objetoJson.item("datosUsuario").item("email"), " ")(0)
+        firstName = objetoJson.item("datosUsuario").item("nombre")
+        lastname = objetoJson.item("datosUsuario").item("apellidos")
     End If
 End Sub

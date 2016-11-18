@@ -4,7 +4,8 @@ Sub InMail1()
     Dim tiempo As New CalculateTime
     tiempo.StartTimer
     Dim body As String
-    body = "{""formulario"":""formaleta"",""medidas"":{""unidades"":""mm"",""altura"":10,""diametroInterno"":10,""alturaRanura"":10},""opciones"":{""CP_0"":{""activado"":true,""texto"":""W16X26""},""RV_0_90"":{""activado"":true}},""datosUsuario"":{""nombre"":""diego"",""apellidos"":""rojas"",""email"":""dicrojasch@unal.edu.co""}}"
+    body = "{""formulario"":""formaleta"",""medidas"":{""unidades"":""mm"",""altura"":10,""diametroInterno"":10,""alturaRanura"":10},""opciones"":{""CP_0"":{""activado"":true,""texto"":""W16X26""},""RV_0_90"":{""activado"":true}},""datosUsuario"":{""nombre"":""diego"",""apellidos"":""rojas"",""email"":""icquirogac@unal.edu.co""}}"
+     
     Dim objetoJson As Object
     Dim cliente As New Client
     Dim quot As New Quote
@@ -19,22 +20,25 @@ Sub InMail1()
     quot.benefit = 0.2
     
     If Not objetoJson Is Nothing Then
-        If "formaleta" = objetoJson.Item("formulario") Then
+        If "formaleta" = objetoJson.item("formulario") Then
         
             Set formaleta = New Formaletas
             Call formaleta.JSONtoFormaleta(objetoJson)
             Set quot.producto = New Product
             Call quot.producto.setFormaleta(formaleta)
             quot.producto.price = 2000000
+                    ' To Do: Calculate price in product with materiales
             Call addExcel.pasarAExcelFormaleta(formaleta)
             
-        ElseIf "invernadero" = objetoJson.Item("formulario") Then
+        ElseIf "invernadero" = objetoJson.item("formulario") Then
             
             Set invernadero = New Invernaderos
-            invernadero.JSONtoInvernaderos (objetoJson)
-            quot.producto.setInvernadero (invernadero)
+            Call invernadero.JSONtoInvernaderos(objetoJson)
+            Set quot.producto = New Product
+            Call quot.producto.setInvernadero(invernadero)
             quot.producto.price = 5000000
-            Call addExcel.pasarExcelInvernadero(objetoJson)
+                    ' To Do: Calculate price in product with materiales
+            Call addExcel.pasarExcelInvernadero(invernadero)
                     
         End If
         
@@ -53,16 +57,27 @@ Sub InMail1()
         
         ' State 1, The client and product exists in database
         quot.state = 1
+        
         quot.time_response = tiempo.EndTimer
         If Not database.CreateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
         End If
         
-        '        OpenInventorFile (path & pathExample)
-        ' ToDo Inventor operations
-                
-        ' State 2, the inventor files has been created
+        
+        Call Mail_Recieve(quot)
+        ' State 2, The receive answer has been sent to the client
         quot.state = 2
+        quot.time_response = tiempo.EndTimer
+        If Not database.CreateQuote(quot) Then
+            Debug.Print "No se creo cotizacion"
+        End If
+        
+'        OpenInventorFile (path & pathExample)
+        ' ToDo Inventor operations
+        Call wordCotizacion(quot)
+                
+        ' State 3, the files has been created
+        quot.state = 3
         quot.time_response = tiempo.EndTimer
         If Not database.UpdateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
@@ -71,8 +86,8 @@ Sub InMail1()
         
         Call Mail_Quote(quot)
         
-        ' State 3, the answer to the client has been sent
-        quot.state = 3
+        ' State 4, the answer to the client has been sent
+        quot.state = 4
         quot.time_response = tiempo.EndTimer
         If Not database.UpdateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
@@ -85,8 +100,8 @@ Sub InMail1()
         Call copyFile(path & "Plantilla de datos.xlsx", newDirectory & "Plantilla de datos.xlsx")
         
         
-        ' State 4, The files has been moved to the appropriate folders ans the operation has finished correctly
-        quot.state = 4
+        ' State 5, The files has been moved to the appropriate folders ans the operation has finished correctly
+        quot.state = 5
         quot.time_response = tiempo.EndTimer
         If Not database.UpdateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
@@ -366,3 +381,4 @@ Sub testClient()
     
     
 End Sub
+
