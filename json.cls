@@ -336,15 +336,15 @@ End Function
  
 Private Function encode(str) As String
      
-    Dim i, j, aL1, aL2, c, p
+    Dim i, j, aL1, aL2, C, p
  
     aL1 = Array(&H22, &H5C, &H2F, &H8, &HC, &HA, &HD, &H9)
     aL2 = Array(&H22, &H5C, &H2F, &H62, &H66, &H6E, &H72, &H74)
     For i = 1 To Len(str)
         p = True
-        c = Mid(str, i, 1)
+        C = Mid(str, i, 1)
         For j = 0 To 7
-            If c = Chr(aL1(j)) Then
+            If C = Chr(aL1(j)) Then
                 encode = encode & "\" & Chr(aL2(j))
                 p = False
                 Exit For
@@ -353,9 +353,9 @@ Private Function encode(str) As String
  
         If p Then
             Dim a
-            a = AscW(c)
+            a = AscW(C)
             If a > 31 And a < 127 Then
-                encode = encode & c
+                encode = encode & C
             ElseIf a > -1 Or a < 65535 Then
                 encode = encode & "\u" & String(4 - Len(Hex(a)), "0") & Hex(a)
             End If

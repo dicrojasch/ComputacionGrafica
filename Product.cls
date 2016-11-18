@@ -16,7 +16,13 @@ Private isInvernadero As Boolean
 Private isMaquinaria As Boolean
 Private materials As New Dictionary
 
+Public Function is_Formaleta() As Boolean
+    is_Formaleta = isFormaleta
+End Function
 
+Public Function is_Invernadero() As Boolean
+    is_Invernadero = isInvernadero
+End Function
 
 
 Public Function setFormaleta(formaleta As Formaletas)

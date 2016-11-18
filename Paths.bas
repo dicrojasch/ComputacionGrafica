@@ -5,9 +5,15 @@ Public Const pathExample = "Ejemplo Inventor\toExporti.iam"
 'Public Const pathFormaleta = "Ejemplo Inventor\toExporti.iam"  ToDo
 'Public Const pathInvernadero = "Ejemplo Inventor\toExporti.iam"  ToDo
 Public Const pathPlantilla = "cotizacion.oft"
+Public Const pathInvernaderos = "C:\Computacion_Grafica\"
+
+
 
 Public Const modelo2D = "modelo2d.pdf"
 Public Const modelo3D = "modelo3d.pdf"
+
+'Path para ejecutar macros de formaletas
+Public Const pathFormaletas = "C:\FORMALETAS ver-15-11\"
 
 'Base de datos Local
 'Public Const DBServer = "127.0.0.1"             ' Servidor local

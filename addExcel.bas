@@ -23,10 +23,10 @@ Sub añadirACelda2(excelApp As Excel.Application, value As Boolean, position1 As 
 
 End Sub
 
-Sub pasarAExcelFormaleta(formaleta As Formaletas)
+Sub pasarAExcelFormaleta(formaleta As Formaletas, id As Integer)
 
     Dim excelApp As New Excel.Application
-    excelApp.Workbooks.Open (path & "Plantilla de datos.xlsx") ' archivo excel formalera
+    excelApp.Workbooks.Open (pathFormaletas & "FORMALETAS BASE\DatosEntrada.xlsx") ' archivo excel formaleta
 
     With excelApp.ActiveSheet
         .Cells(1, 3).value = formaleta.unidades
@@ -35,7 +35,7 @@ Sub pasarAExcelFormaleta(formaleta As Formaletas)
         .Cells(1, 2).value = formaleta.altura
         .Cells(2, 2).value = formaleta.diamInterno
         .Cells(3, 2).value = formaleta.AltRanura
-        
+        .Cells(20, 2).value = id
     End With
     
         Call añadirACelda(excelApp, formaleta.cPlate0, 4)
@@ -62,7 +62,7 @@ Sub pasarAExcelFormaleta(formaleta As Formaletas)
 End Sub
 Sub pasarExcelInvernadero(invernadero As Invernaderos)
     Dim excelApp As New Excel.Application
-    excelApp.Workbooks.Open (path & "Parametros_Invernaderos.xlsm") ' archivo excel de invernaderos
+    excelApp.Workbooks.Open (pathInvernaderos & "Parametros_Invernaderos.xlsm") ' archivo excel de invernaderos
     
     With excelApp.ActiveSheet
         .Cells(5, 6).value = invernadero.tipo
@@ -74,10 +74,9 @@ Sub pasarExcelInvernadero(invernadero As Invernaderos)
         .Cells(3, 6).value = invernadero.largo
         
     End With
-    
     excelApp.ActiveWorkbook.Save
-    excelApp.Quit
     
+    excelApp.Quit
 End Sub
 
 Private Sub SearchReplace(search As String, replace As String, wordApp As Word.Application)
@@ -131,6 +130,5 @@ Sub stringWord(wordApp As Word.Application, toString As String)
     
     wordApp.Selection.Move 2, 68
     wordApp.Visible = True
-    MsgBox ("fgdfgh")
     wordApp.Selection.TypeText (toString)
 End Sub
