@@ -1,6 +1,6 @@
 Attribute VB_Name = "EmailResponse"
 Public Sub InMail(mail As Outlook.MailItem)
-    
+    Call closeInventor
     Dim tiempo As New CalculateTime
     tiempo.StartTimer
         
@@ -128,7 +128,7 @@ Public Sub InMail(mail As Outlook.MailItem)
         Call database.closeConectionDB
         
     End If
-        
+    Call closeInventor
 End Sub
 
 

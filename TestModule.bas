@@ -4,8 +4,8 @@ Sub InMail1()
     Dim tiempo As New CalculateTime
     tiempo.StartTimer
     Dim body As String
-    body = "{""formulario"":""formaleta"",""medidas"":{""unidades"":""mm"",""altura"":10,""diametroInterno"":10,""alturaRanura"":10},""opciones"":{""CP_0"":{""activado"":true,""texto"":""W16X26""},""RV_0_90"":{""activado"":true}},""datosUsuario"":{""nombre"":""diego"",""apellidos"":""rojas"",""email"":""icquirogac@unal.edu.co""}}"
-    'body = "{""formulario"":""invernadero"",""medidas"":{""unidades"":""metros"",""tipo"":""piramide"",""ancho"":10,""largo"":10,""alto"":10},""datosUsuario"":{""nombre"":""DIego"",""apellidos"":""Rojas"",""email"":""asc@gmail.com""}}"
+    'body = "{""formulario"":""formaleta"",""medidas"":{""unidades"":""mm"",""altura"":10,""diametroInterno"":10,""alturaRanura"":10},""opciones"":{""CP_0"":{""activado"":true,""texto"":""W16X26""},""RV_0_90"":{""activado"":true}},""datosUsuario"":{""nombre"":""diego"",""apellidos"":""rojas"",""email"":""icquirogac@unal.edu.co""}}"
+    body = "{""formulario"":""invernadero"",""medidas"":{""unidades"":""metros"",""tipo"":""piramide"",""ancho"":10,""largo"":10,""alto"":10},""datosUsuario"":{""nombre"":""DIego"",""apellidos"":""Rojas"",""email"":""asc@gmail.com""}}"
          Dim objetoJson As Object
     Dim cliente As New Client
     Dim quot As New Quote
@@ -402,3 +402,23 @@ Sub testClient()
     
 End Sub
 
+
+
+
+Sub closeInventor()
+
+    Dim invApp As Inventor.Application
+    On Error Resume Next
+    Set invApp = GetObject(, "Inventor.Application")
+    Dim IsInventorRunning As Boolean
+    IsInventorRunning = (Err.Number = 0)
+    MsgBox IsInventorRunning
+    
+    If IsInventorRunning Then
+    invApp.ActiveDocument.Close True
+        invApp.Quit
+        Set invApp = Nothing
+    End If
+    Set invApp = Nothing
+    Err.Clear
+End Sub
