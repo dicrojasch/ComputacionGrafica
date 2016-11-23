@@ -4,8 +4,8 @@ Sub InMail1()
     Dim tiempo As New CalculateTime
     tiempo.StartTimer
     Dim body As String
-    'body = "{""formulario"":""formaleta"",""medidas"":{""unidades"":""mm"",""altura"":10,""diametroInterno"":10,""alturaRanura"":10},""opciones"":{""CP_0"":{""activado"":true,""texto"":""W16X26""},""RV_0_90"":{""activado"":true}},""datosUsuario"":{""nombre"":""diego"",""apellidos"":""rojas"",""email"":""icquirogac@unal.edu.co""}}"
-    body = "{""formulario"":""invernadero"",""medidas"":{""unidades"":""metros"",""tipo"":""piramide"",""ancho"":10,""largo"":10,""alto"":10},""datosUsuario"":{""nombre"":""DIego"",""apellidos"":""Rojas"",""email"":""asc@gmail.com""}}"
+    body = "{""formulario"":""formaleta"",""medidas"":{""unidades"":""mm"",""altura"":10,""diametroInterno"":10,""alturaRanura"":10},""opciones"":{""CP_0"":{""activado"":true,""texto"":""W16X26""},""RV_0_90"":{""activado"":true}},""datosUsuario"":{""nombre"":""diego"",""apellidos"":""rojas"",""email"":""icquirogac@unal.edu.co""}}"
+    'body = "{""formulario"":""invernadero"",""medidas"":{""unidades"":""metros"",""tipo"":""piramide"",""ancho"":10,""largo"":10,""alto"":10},""datosUsuario"":{""nombre"":""DIego"",""apellidos"":""Rojas"",""email"":""asc@gmail.com""}}"
          Dim objetoJson As Object
     Dim cliente As New Client
     Dim quot As New Quote
@@ -41,6 +41,10 @@ Sub InMail1()
             Call addExcel.pasarExcelInvernadero(invernadero)
                     
         End If
+        
+        quot.producto.addMaterials
+        
+    
         
         Dim database As New GraficaDB
         Call database.ConnectDB(DBServer, schema, user, password)
@@ -98,7 +102,7 @@ Sub InMail1()
         End If
         
         Dim newDirectory As String
-        newDirectory = path & "Cotizaciones\" & Year(Date) & "\" & getMonth & "\" & quot.cliente.firstName & "_" & quot.cliente.lastname & "_P" & quot.producto.id & "\"
+        newDirectory = path & "Dropbox\Cotizaciones\" & Year(Date) & "\" & getMonth & "\" & quot.cliente.firstName & "_" & quot.cliente.lastname & "_P" & quot.producto.id & "\"
         createDirectory (newDirectory)
   
         If quot.producto.is_Formaleta Then
@@ -108,8 +112,8 @@ Sub InMail1()
             Call moveFile(pathInvernaderos & "Estructura_BT7D.jpg", newDirectory & "Estructura_BT7D.jpg")
             Call moveFile(pathInvernaderos & "Estructura_RC.jpg", newDirectory & "Estructura_RC.jpg")
             Call moveFile(pathInvernaderos & "Estructura_RT.jpg", newDirectory & "Estructura_RT.jpg")
-            Call moveFile(pathInvernaderos & "BOM_BT4D.xlsx", newDirectory & "BOM_BT4D.xlsx")
-            Call moveFile(pathInvernaderos & "BOM_BT7D.xlsx", newDirectory & "BOM_BT7D.xlsx")
+            Call moveFile(pathInvernaderos & "BOM_BT4.xlsx", newDirectory & "BOM_BT4D.xlsx")
+            Call moveFile(pathInvernaderos & "BOM_BT7.xlsx", newDirectory & "BOM_BT7D.xlsx")
             Call moveFile(pathInvernaderos & "BOM_RC.xlsx", newDirectory & "BOM_RC.xlsx")
             Call moveFile(pathInvernaderos & "BOM_RT.xlsx", newDirectory & "BOM_RT.xlsx")
         End If

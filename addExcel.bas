@@ -26,7 +26,7 @@ End Sub
 Sub pasarAExcelFormaleta(formaleta As Formaletas, id As Integer)
 
     Dim excelApp As New Excel.Application
-    excelApp.Workbooks.Open (pathFormaletas & "FORMALETAS BASE\DatosEntrada.xlsx") ' archivo excel formaleta
+    excelApp.Workbooks.Open (pathFormaletas & "DatosEntrada.xlsx") ' archivo excel formaleta
 
     With excelApp.ActiveSheet
         .Cells(1, 3).value = formaleta.unidades

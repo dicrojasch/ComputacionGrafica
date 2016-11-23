@@ -126,3 +126,35 @@ Public Function toString() As String
     End If
 End Function
 
+Public Sub addMaterials()
+
+    Dim excelApp As Excel.Application
+    Set excelApp = New Excel.Application
+    If isFormaleta Then
+        excelApp.Workbooks.Open (Paths.pathFormaletas & "Lista de Materiales.xlsx")
+        i = 2
+        Do While excelApp.ActiveSheet.Cells(i, 1).value <> ""
+            Dim nuevoMaterial As Material
+            Set nuevoMaterial = New Material
+            nuevoMaterial.description = excelApp.ActiveSheet.Cells(i, 2).value
+            nuevoMaterial.name = excelApp.ActiveSheet.Cells(i, 5).value
+            nuevoMaterial.price = excelApp.ActiveSheet.Cells(i, 8).value
+            nuevoMaterial.quantity = excelApp.ActiveSheet.Cells(i, 7).value
+            Call addMaterial(nuevoMaterial)
+            i = i + 1
+        Loop
+        prices = 0
+        For Each mat In materials
+            
+            prices = prices + (mat.price * mat.quantity)
+        Next mat
+       price = prices
+       
+    ElseIf isInvernadero Then
+            
+            
+        
+    End If
+    
+
+End Sub

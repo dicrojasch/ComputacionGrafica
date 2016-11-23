@@ -13,7 +13,7 @@ Public Const modelo2D = "modelo2d.pdf"
 Public Const modelo3D = "modelo3d.pdf"
 
 'Path para ejecutar macros de formaletas
-Public Const pathFormaletas = "C:\FORMALETAS ver-15-11\"
+Public Const pathFormaletas = "C:\Computacion_Grafica\"
 
 'Base de datos Local
 'Public Const DBServer = "127.0.0.1"             ' Servidor local
