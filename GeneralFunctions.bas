@@ -180,3 +180,24 @@ Sub closeWord()
     Set WordApp = Nothing
     Err.Clear
 End Sub
+
+
+Sub checkQuoteFiles()
+    Dim target As String
+    target = path & "\Dropbox\Missing Files\"
+    If Dir(pathInvernaderos & "Cotizacion_BT4D.pdf") = "" Then
+        Call moveFile(pathInvernaderos & "Cotizacion_BT4D.pdf", target & "Cotizacion_BT4D.pdf")
+    ElseIf Dir(pathInvernaderos & "Cotizacion_BT7D.pdf") = "" Then
+        Call moveFile(pathInvernaderos & "Cotizacion_BT7D.pdf", target & "Cotizacion_BT7D.pdf")
+    ElseIf Dir(pathInvernaderos & "Cotizacion_RC.pdf") = "" Then
+        Call moveFile(pathInvernaderos & "Cotizacion_RC.pdf", target & "Cotizacion_RC.pdf")
+    ElseIf Dir(pathInvernaderos & "Cotizacion_RT.pdf") = "" Then
+        Call moveFile(pathInvernaderos & "Cotizacion_RT.pdf", target & "Cotizacion_RT.pdf")
+    ElseIf Dir(pathInvernaderos & "Plano 2.pdf") = "" Then
+        Call moveFile(pathInvernaderos & "Plano 2.pdf", target & "Plano 2.pdf")
+    ElseIf Dir(pathInvernaderos & "Cotizacion_Formaleta.pdf") Then
+        Call moveFile(pathInvernaderos & "Cotizacion_Formaleta.pdf", target & "Cotizacion_Formaleta.pdf")
+    ElseIf Dir(pathInvernaderos & "Cotizacion_Formaleta.pdf") = "" Then
+        Call moveFile(pathInvernaderos & "Cotizacion_Formaleta.pdf", target & "Cotizacion_Formaleta.pdf")
+    End If
+End Sub

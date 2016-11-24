@@ -385,11 +385,6 @@ Public Sub test()
 End Sub
 
 Sub testClient()
-      Dim database As New GraficaDB
-        Call database.ConnectDB(DBServer, schema, user, password)
-      
-        Call database.closeConectionDB
-    
     
 End Sub
 
