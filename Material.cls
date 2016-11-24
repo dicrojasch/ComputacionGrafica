@@ -11,7 +11,9 @@ Public name As String
 Public description As String
 Public price As Double
 Public quantity As Integer
+Public quantityQuote As Integer 
 Public quantity_purch As Integer
+Public min As Integer
 Private is_Update As Boolean
 
 Public Function getTotalPrice() As Double

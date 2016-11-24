@@ -163,7 +163,7 @@ Private Function CreateMaterialProduct(product1 As Product) As Boolean
                         records.AddNew
                         records!product_id = product1.id
                         records!material_name = mat.name
-                        records!quantity = mat.quantity_purch
+                        records!quantity = mat.quantityQuote						
                         records.Update
                         records.Close
                         Set records = Nothing
@@ -289,6 +289,7 @@ Public Function getMaterial(name As String) As Material
             getMaterial.description = answer(1, 0)
             getMaterial.price = answer(2, 0)
             getMaterial.quantity = answer(3, 0)
+			getMaterial.min = answer(4, 0)
         End If
         records.Close
         Set records = Nothing
@@ -297,18 +298,22 @@ Public Function getMaterial(name As String) As Material
     End If
 End Function
 
-Private Function addQuantityMat(mat As Material) As Material
-    Set addQuantityMat = mat
+Private Function updateMaterial(mat As Material) As Material
+    Set updateMaterial = mat
     If checkConnect Then
         If mat.updateQuantity Then
             Dim query As String
             query = "Select * from material where name = '" & mat.name & "' ;"
             Set records = New ADODB.Recordset
             records.Open query, GraficaConnect, adOpenDynamic, adLockOptimistic
-            If Not records.EOF Then
+            If Not records.EOF Then  
+                records!description = mat.description
                 records!quantity = mat.quantity
+				records!quantityQuote = mat.quantityQuote
+				records!quantity_purch = mat.quantity_purch
+				records!min = mat.min
                 records.Update
-                Set addQuantityMat = mat
+                Set updateMaterial = mat
             End If
             records.Close
             Set records = Nothing
@@ -331,6 +336,10 @@ Public Function CreateMaterial(mat As Material) As Boolean
             records!description = mat.description
             records!price = mat.price
             records!quantity = mat.quantity
+			if mat.min = 0 then
+				mat.min = 1000
+			End If
+			records!min = mat.min
             records.Update
             records.Close
             Set records = Nothing
@@ -368,7 +377,7 @@ Public Function getProvider(name As String) As Provider
         Dim query As String
         Dim answer As Variant
         Set records = New ADODB.Recordset
-        query = "Select * from material where name = '" & name & "';"
+        query = "Select * from provider where name = '" & name & "';"
         records.Open query, GraficaConnect, adOpenDynamic
         If Not records.EOF Then
             answer = records.GetRows()
@@ -502,7 +511,7 @@ Private Function CreatePurchaseMaterial(purchase As Purchases) As Boolean
                     records.Update
                     records.Close
                     Set records = Nothing
-                    Set tmpMaterial = addQuantityMat(tmpMaterial)
+                    Set tmpMaterial = updateMaterial(tmpMaterial)
                 Next i
                 CreatePurchaseMaterial = True
             Else

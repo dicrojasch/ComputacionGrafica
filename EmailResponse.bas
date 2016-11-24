@@ -217,3 +217,7 @@ Sub Mail_Quote(quot As Quote)
     Set OutApp = Nothing
 End Sub
 
+Sub updateMaterialEmail()
+	
+
+End Sub
