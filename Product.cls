@@ -130,29 +130,37 @@ Public Sub addMaterials()
 
     Dim ExcelApp As Excel.Application
     Set ExcelApp = New Excel.Application
+    Dim nuevoMaterial As Material
+    Set nuevoMaterial = New Material
     If isFormaleta Then
         ExcelApp.Workbooks.Open (Paths.pathFormaletas & "Lista de Materiales.xlsx")
         i = 2
         Do While ExcelApp.ActiveSheet.Cells(i, 1).value <> ""
-            Dim nuevoMaterial As Material
-            Set nuevoMaterial = New Material
             nuevoMaterial.description = ExcelApp.ActiveSheet.Cells(i, 2).value
             nuevoMaterial.name = ExcelApp.ActiveSheet.Cells(i, 5).value
             nuevoMaterial.price = ExcelApp.ActiveSheet.Cells(i, 8).value
-            nuevoMaterial.quantity = ExcelApp.ActiveSheet.Cells(i, 7).value
+            nuevoMaterial.quotQuantity = ExcelApp.ActiveSheet.Cells(i, 7).value
             Call addMaterial(nuevoMaterial)
             i = i + 1
         Loop
         prices = 0
         For Each mat In materials
-            
             prices = prices + (mat.price * mat.quantity)
         Next mat
        price = prices
        
     ElseIf isInvernadero Then
             
-            
+        ExcelApp.Workbooks.Open (Paths.pathFormaletas & "BOM_RT.xlsx")
+        i = 2
+        Do While ExcelApp.ActiveSheet.Cells(i, 1).value <> ""
+            nuevoMaterial.description = ExcelApp.ActiveSheet.Cells(i, 2).value
+            nuevoMaterial.name = ExcelApp.ActiveSheet.Cells(i, 2).value
+            'nuevoMaterial.price = ExcelApp.ActiveSheet.Cells(i, 8).value
+            nuevoMaterial.quotQuantity = ExcelApp.ActiveSheet.Cells(i, 4).value
+            Call addMaterial(nuevoMaterial)
+            i = i + 1
+        Loop
         
     End If
     

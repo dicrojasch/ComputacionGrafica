@@ -163,7 +163,7 @@ Private Function CreateMaterialProduct(product1 As Product) As Boolean
                         records.AddNew
                         records!product_id = product1.id
                         records!material_name = mat.name
-                        records!quantity = mat.quantity_purch
+                        records!quantity = mat.quotQuantity
                         records.Update
                         records.Close
                         Set records = Nothing
@@ -289,6 +289,7 @@ Public Function getMaterial(name As String) As Material
             getMaterial.description = answer(1, 0)
             getMaterial.price = answer(2, 0)
             getMaterial.quantity = answer(3, 0)
+            'ToDo : getMaterial.min = answer(4, 0)
         End If
         records.Close
         Set records = Nothing

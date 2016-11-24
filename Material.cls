@@ -10,9 +10,14 @@ Attribute VB_Exposed = False
 Public name As String
 Public description As String
 Public price As Double
+
 Public quantity As Integer
+Public quotQuantity As Integer
 Public quantity_purch As Integer
+
 Private is_Update As Boolean
+Public min As Integer
+
 
 Public Function getTotalPrice() As Double
     getTotalPrice = quantity_purch * price

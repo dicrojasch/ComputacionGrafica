@@ -115,3 +115,68 @@ Sub copyFile(sourceFile, targetFile)
     Set FSO = Nothing
 End Sub
 
+Sub closeExcel1()
+    On Error Resume Next
+    While Err.Number = 0
+        Set objOffice = GetObject(, "Excel.Application")
+        objOffice.DisplayAlerts = False
+        For Each objWindow In objOffice.Windows
+            objWindow.Activate
+            Set WBook = objOffice.ActiveWorkbook
+            WBook.Saved = True
+            WBook.Close
+        Next
+        objOffice.DisplayAlerts = True
+        objOffice.Quit
+        Set objOffice = Nothing
+        WScript.Sleep 2000
+    Wend
+    
+    MsgBox "Done"
+End Sub
+
+Sub closeExcel()
+   On Error Resume Next
+   Dim ExcelApp As Excel.Application
+   Set ExcelApp = GetObject(, "Excel.Application")
+   
+   Dim isExcelRunning As Boolean
+   isExcelRunning = (Err.Number = 0)
+   If isExcelRunning Then
+        ExcelApp.Quit
+   End If
+       
+   Set ExcelApp = Nothing
+   Err.Clear
+End Sub
+
+Sub closeInventor()
+
+    Dim invApp As Inventor.Application
+    On Error Resume Next
+    Set invApp = GetObject(, "Inventor.Application")
+    Dim IsInventorRunning As Boolean
+    IsInventorRunning = (Err.Number = 0)
+    If IsInventorRunning Then
+        invApp.ActiveDocument.Close True
+        invApp.Quit
+        Set invApp = Nothing
+    End If
+    Set invApp = Nothing
+    Err.Clear
+End Sub
+
+
+Sub closeWord()
+    Dim WordApp As Word.Application
+    On Error Resume Next
+    Set WordApp = GetObject(, "Word.Application")
+    Dim isWordAppRunning As Boolean
+    isWordAppRunning = (Err.Number = 0)
+    MsgBox isWordAppRunning
+    If isWordAppRunning Then
+        WordApp.Quit
+    End If
+    Set WordApp = Nothing
+    Err.Clear
+End Sub
