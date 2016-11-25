@@ -4,8 +4,13 @@ Sub InMail1()
     Dim tiempo As New CalculateTime
     tiempo.StartTimer
     Dim body As String
-    'body = "{""formulario"":""formaleta"",""medidas"":{""unidades"":""mm"",""altura"":10,""diametroInterno"":10,""alturaRanura"":10},""opciones"":{""CP_0"":{""activado"":true,""texto"":""W16X26""},""RV_0_90"":{""activado"":true}},""datosUsuario"":{""nombre"":""diego"",""apellidos"":""rojas"",""email"":""icquirogac@unal.edu.co""}}"
-    body = "{""formulario"":""invernadero"",""medidas"":{""unidades"":""metros"",""tipo"":""piramide"",""ancho"":10,""largo"":10,""alto"":10},""datosUsuario"":{""nombre"":""DIego"",""apellidos"":""Rojas"",""email"":""asc@gmail.com""}}"
+    body = "{""formulario"":""formaleta"",""medidas"":{""unidades"":""mm"",""altura"":2000,""diametroInterno"":2000,""alturaRanura"":200},""opciones"":{""CP_0"":{""activado"":true,""texto"":""W16X26""},""RV_0_90"":{""activado"":true}},""datosUsuario"":{""nombre"":""diego"",""apellidos"":""rojas"",""email"":""icquirogac@unal.edu.co""}}"
+    'body = "{""formulario"":""invernadero"",""medidas"":{""unidades"":""metros"",""tipo"":""rectangularCircular"",""ancho"":5,""largo"":5,""alto"":2},""datosUsuario"":{""nombre"":""DIego"",""apellidos"":""Rojas"",""email"":""icquirogac@unal.edu.co""}}"
+    
+    Call closeInventor
+    Call moveInvernaderoFiles(path & "Dropbox\Missing Files\")
+    Call moveFormaletaFiles(path & "Dropbox\Missing Files\")
+
     Dim objetoJson As Object
     Dim cliente As New Client
     Dim quot As New Quote
@@ -41,10 +46,7 @@ Sub InMail1()
             Call addExcel.pasarExcelInvernadero(invernadero)
                     
         End If
-        
-        quot.producto.addMaterials
-        
-        
+                        
         Dim database As New GraficaDB
         Call database.ConnectDB(DBServer, schema, user, password)
         
@@ -66,24 +68,25 @@ Sub InMail1()
             Debug.Print "No se creo cotizacion"
         End If
         
-        
-        Call Mail_Recieve(quot)
+   
         ' State 2, The receive answer has been sent to the client
         quot.state = 2
         quot.time_response = tiempo.EndTimer
         If Not database.CreateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
         End If
-        
+'        MsgBox (quot.producto.getName)
+'        MsgBox (quot.producto.is_Formaleta)
+'        MsgBox (quot.producto.is_Invernadero)
         If quot.producto.is_Invernadero Then
             Call ExecInvernaderos
         ElseIf quot.producto.is_Formaleta Then
-            'Call ExecFormaletas
+            Call ExecFormaletas
         End If
-    
-        Call wordCotizacion(quot)
-                
+        MsgBox "TERMINO INVENTOR"
         ' State 3, the files has been created
+        quot.producto.addMaterials
+        
         quot.state = 3
         quot.time_response = tiempo.EndTimer
         If Not database.UpdateQuote(quot) Then
@@ -91,7 +94,7 @@ Sub InMail1()
         End If
         
         
-        'Call Mail_Quote(quot)
+        Call Mail_Quote(quot)
         
         ' State 4, the answer to the client has been sent
         quot.state = 4
@@ -109,7 +112,7 @@ Sub InMail1()
         ElseIf quot.producto.is_Invernadero Then
             Call moveInvernaderoFiles(newDirectory)
         End If
-        Call moveFile(path & "cotizacion" & quot.producto.id & ".pdf", newDirectory & "cotizacion" & quot.producto.id & ".pdf")
+        'Call moveFile(path & "cotizacion" & quot.producto.id & ".pdf", newDirectory & "cotizacion" & quot.producto.id & ".pdf")
         
         
         ' State 5, The files has been moved to the appropriate folders ans the operation has finished correctly
@@ -385,6 +388,11 @@ Public Sub test()
 End Sub
 
 Sub testClient()
+      Dim database As New GraficaDB
+        Call database.ConnectDB(DBServer, schema, user, password)
+      
+        Call database.closeConectionDB
+    
     
 End Sub
 

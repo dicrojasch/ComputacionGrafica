@@ -61,12 +61,13 @@ Sub pasarAExcelFormaleta(formaleta As Formaletas, id As Integer)
     
 End Sub
 Sub pasarExcelInvernadero(invernadero As Invernaderos)
-    Dim ExcelApp As New Excel.Application
+    Dim ExcelApp As Excel.Application
     Set ExcelApp = New Excel.Application
     
     ExcelApp.Workbooks.Open (pathInvernaderos & "Parametros_Invernaderos.xlsm") ' archivo excel de invernaderos
     
     With ExcelApp.ActiveSheet
+        
         .Cells(5, 6).value = invernadero.tipo
         
         .Cells(4, 6).value = invernadero.alto

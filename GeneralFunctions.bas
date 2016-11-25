@@ -95,7 +95,20 @@ Sub createDirectory(directoryPath)
         End If
     Next Folder
 End Sub
-
+Sub actualizaPrecios()
+    Dim ExcelApp As Excel.Application
+    Set ExcelApp = New Excel.Application
+    ExcelApp.Workbooks.Open (pathInvernaderos & "Precios.xlsx")
+    With ExcelApp.ActiveSheet
+        .Cells(2, 3).value = 123 'BASE DE DATOS
+        .Cells(3, 3).value = 123
+        .Cells(4, 3).value = 123
+        .Cells(5, 3).value = 123
+        .Cells(6, 3).value = 123
+        .Cells(7, 3).value = 123
+    End With
+    ExcelApp.ActiveWorkbook.Close (1)
+End Sub
 Sub moveFile(sourceFile, targetFile)
     Set FSO = CreateObject("Scripting.FileSystemObject")
     If FSO.FileExists(targetFile) Then
@@ -136,18 +149,7 @@ Sub closeExcel1()
 End Sub
 
 Sub closeExcel()
-   On Error Resume Next
-   Dim ExcelApp As Excel.Application
-   Set ExcelApp = GetObject(, "Excel.Application")
-   
-   Dim isExcelRunning As Boolean
-   isExcelRunning = (Err.Number = 0)
-   If isExcelRunning Then
-        ExcelApp.Quit
-   End If
-       
-   Set ExcelApp = Nothing
-   Err.Clear
+    Shell ("cmd.exe /c taskkill /im ""EXCEL.exe"" ")
 End Sub
 
 Sub closeInventor()
@@ -173,31 +175,10 @@ Sub closeWord()
     Set WordApp = GetObject(, "Word.Application")
     Dim isWordAppRunning As Boolean
     isWordAppRunning = (Err.Number = 0)
-    MsgBox isWordAppRunning
+    
     If isWordAppRunning Then
         WordApp.Quit
     End If
     Set WordApp = Nothing
     Err.Clear
-End Sub
-
-
-Sub checkQuoteFiles()
-    Dim target As String
-    target = path & "\Dropbox\Missing Files\"
-    If Dir(pathInvernaderos & "Cotizacion_BT4D.pdf") = "" Then
-        Call moveFile(pathInvernaderos & "Cotizacion_BT4D.pdf", target & "Cotizacion_BT4D.pdf")
-    ElseIf Dir(pathInvernaderos & "Cotizacion_BT7D.pdf") = "" Then
-        Call moveFile(pathInvernaderos & "Cotizacion_BT7D.pdf", target & "Cotizacion_BT7D.pdf")
-    ElseIf Dir(pathInvernaderos & "Cotizacion_RC.pdf") = "" Then
-        Call moveFile(pathInvernaderos & "Cotizacion_RC.pdf", target & "Cotizacion_RC.pdf")
-    ElseIf Dir(pathInvernaderos & "Cotizacion_RT.pdf") = "" Then
-        Call moveFile(pathInvernaderos & "Cotizacion_RT.pdf", target & "Cotizacion_RT.pdf")
-    ElseIf Dir(pathInvernaderos & "Plano 2.pdf") = "" Then
-        Call moveFile(pathInvernaderos & "Plano 2.pdf", target & "Plano 2.pdf")
-    ElseIf Dir(pathInvernaderos & "Cotizacion_Formaleta.pdf") Then
-        Call moveFile(pathInvernaderos & "Cotizacion_Formaleta.pdf", target & "Cotizacion_Formaleta.pdf")
-    ElseIf Dir(pathInvernaderos & "Cotizacion_Formaleta.pdf") = "" Then
-        Call moveFile(pathInvernaderos & "Cotizacion_Formaleta.pdf", target & "Cotizacion_Formaleta.pdf")
-    End If
 End Sub

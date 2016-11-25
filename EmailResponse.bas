@@ -1,6 +1,9 @@
 Attribute VB_Name = "EmailResponse"
 Public Sub InMail(mail As Outlook.MailItem)
     Call closeInventor
+    Call moveInvernaderoFiles(path & "Dropbox\Missing Files")
+    Call moveFormaletaFiles(path & "Dropbox\Missing Files")
+ 
     Dim tiempo As New CalculateTime
     tiempo.StartTimer
         
@@ -39,10 +42,7 @@ Public Sub InMail(mail As Outlook.MailItem)
             Call addExcel.pasarExcelInvernadero(invernadero)
                     
         End If
-        
-        quot.producto.addMaterials
-        
-        
+                        
         Dim database As New GraficaDB
         Call database.ConnectDB(DBServer, schema, user, password)
         
@@ -64,26 +64,24 @@ Public Sub InMail(mail As Outlook.MailItem)
             Debug.Print "No se creo cotizacion"
         End If
         
-        
-        'Call Mail_Recieve(quot)
+   
         ' State 2, The receive answer has been sent to the client
         quot.state = 2
         quot.time_response = tiempo.EndTimer
         If Not database.CreateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
         End If
-        MsgBox (quot.producto.getName)
-        MsgBox (quot.producto.is_Formaleta)
-        MsgBox (quot.producto.is_Invernadero)
+'        MsgBox (quot.producto.getName)
+'        MsgBox (quot.producto.is_Formaleta)
+'        MsgBox (quot.producto.is_Invernadero)
         If quot.producto.is_Invernadero Then
             Call ExecInvernaderos
         ElseIf quot.producto.is_Formaleta Then
             Call ExecFormaletas
         End If
-    
-        'Call wordCotizacion(quot)
                 
         ' State 3, the files has been created
+        quot.producto.addMaterials
         quot.state = 3
         quot.time_response = tiempo.EndTimer
         If Not database.UpdateQuote(quot) Then
@@ -137,52 +135,6 @@ Function ChangeBody(body As String, quot As Quote) As String
     ChangeBody = body
 End Function
 
-Sub Mail_Recieve(mail As Outlook.MailItem)
-    Dim objetoJson As Object
-    Dim cliente As New Client
-    Dim quot As New Quote
-    Dim producto As New Product
-    Dim formaleta As Formaletas
-    Dim invernadero As Invernaderos
-                
-    Set objetoJson = parseJSON(mail.body)
-    Set quot.cliente = New Client
-    Call quot.cliente.JSONtoClient(objetoJson)
-    
-    If Not objetoJson Is Nothing Then
-        If "formaleta" = objetoJson.item("formulario") Then
-            Set formaleta = New Formaletas
-            Call formaleta.JSONtoFormaleta(objetoJson)
-            Set quot.producto = New Product
-            Call quot.producto.setFormaleta(formaleta)
-        ElseIf "invernadero" = objetoJson.item("formulario") Then
-            Set invernadero = New Invernaderos
-            Call invernadero.JSONtoInvernaderos(objetoJson)
-            Set quot.producto = New Product
-            Call quot.producto.setInvernadero(invernadero)
-        End If
-    End If
-        
-    Dim OutApp As Object
-    Dim OutMail As Object
-    Set OutApp = CreateObject("Outlook.Application")
-    Set OutMail = OutApp.CreateItemFromTemplate(path & "Comprobante.oft")
-    On Error Resume Next
-    With OutMail
-        .To = quot.cliente.email
-        .Subject = "Cotizacion " & quot.producto.getName
-        .body = ChangeBody(.body, quot)
-        .Attachments.Add ActiveWorkbook.FullName
-        .Send
-    End With
-    
-    On Error GoTo 0
-    Set OutMail = Nothing
-    Set OutApp = Nothing
-End Sub
-
-
-
 Sub Mail_Quote(quot As Quote)
     Dim OutApp As Object
     Dim OutMail As Object
@@ -199,14 +151,15 @@ Sub Mail_Quote(quot As Quote)
             .Attachments.Add (pathInvernaderos & "Estructura_BT7D.jpg")
             .Attachments.Add (pathInvernaderos & "Estructura_RC.jpg")
             .Attachments.Add (pathInvernaderos & "Estructura_RT.jpg")
-            .Attachments.Add (pathInvernaderos & "Cotizacion_BT4D.pdf")
-            .Attachments.Add (pathInvernaderos & "Cotizacion_BT7D.pdf")
+            .Attachments.Add (pathInvernaderos & "Cotizacion_BT4.pdf")
+            .Attachments.Add (pathInvernaderos & "Cotizacion_BT7.pdf")
             .Attachments.Add (pathInvernaderos & "Cotizacion_RC.pdf")
             .Attachments.Add (pathInvernaderos & "Cotizacion_RT.pdf")
-        'ElseIf quot.producto.is_Invernadero Then
-        '    ToDo: Attachments of formaleta product
-        ' .Attachments.Add (path & "cotizacion" & quot.producto.id & ".pdf")
-        '
+        ElseIf quot.producto.is_Formaleta Then
+            .Attachments.Add (pathInvernaderos & "Cotizacion_Formaleta.pdf")
+            .Attachments.Add (pathInvernaderos & "Plano 1.pdf")
+            .Attachments.Add (pathInvernaderos & "Plano 2.pdf")
+            .Attachments.Add (pathInvernaderos & "FORMALETA BASE.jpg")
         End If
         .Send                                                                           'envia el correo'
     End With
@@ -231,13 +184,13 @@ Sub moveInvernaderoFiles(newDirectory As String)
             Call moveFile(pathInvernaderos & "Estructura_BT7D.jpg", newDirectory & "Estructura_BT7D.jpg")
             Call moveFile(pathInvernaderos & "Estructura_RC.jpg", newDirectory & "Estructura_RC.jpg")
             Call moveFile(pathInvernaderos & "Estructura_RT.jpg", newDirectory & "Estructura_RT.jpg")
-            Call moveFile(pathInvernaderos & "BOM_BT4.xlsx", newDirectory & "BOM_BT4D.xlsx")
-            Call moveFile(pathInvernaderos & "BOM_BT7.xlsx", newDirectory & "BOM_BT7D.xlsx")
-            Call moveFile(pathInvernaderos & "BOM_RC.xlsx", newDirectory & "BOM_RC.xlsx")
-            Call moveFile(pathInvernaderos & "BOM_RT.xlsx", newDirectory & "BOM_RT.xlsx")
-            Call moveFile(pathInvernaderos & "Cotizacion_BT4D.pdf", newDirectory & "Cotizacion_BT4D.pdf")
-            Call moveFile(pathInvernaderos & "Cotizacion_BT7D.pdf", newDirectory & "Cotizacion_BT7D.pdf")
+            Call moveFile(pathInvernaderos & "Cotizacion_BT4.pdf", newDirectory & "Cotizacion_BT4.pdf")
+            Call moveFile(pathInvernaderos & "Cotizacion_BT7.pdf", newDirectory & "Cotizacion_BT7.pdf")
             Call moveFile(pathInvernaderos & "Cotizacion_RC.pdf", newDirectory & "Cotizacion_RC.pdf")
             Call moveFile(pathInvernaderos & "Cotizacion_RT.pdf", newDirectory & "Cotizacion_RT.pdf")
+            Call moveFile(pathInvernaderos & "BOM_BT4.xlsx", newDirectory & "BOM_BT4.xlsx")
+            Call moveFile(pathInvernaderos & "BOM_BT7.xlsx", newDirectory & "BOM_BT7.xlsx")
+            Call moveFile(pathInvernaderos & "BOM_RC.xlsx", newDirectory & "BOM_RC.xlsx")
+            Call moveFile(pathInvernaderos & "BOM_RT.xlsx", newDirectory & "BOM_RT.xlsx")
             ' ToDo : Move qote files
 End Sub

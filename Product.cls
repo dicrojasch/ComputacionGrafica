@@ -133,36 +133,60 @@ Public Sub addMaterials()
     Dim nuevoMaterial As Material
     Set nuevoMaterial = New Material
     If isFormaleta Then
+    
+        Dim prices As Integer
         ExcelApp.Workbooks.Open (Paths.pathFormaletas & "Lista de Materiales.xlsx")
         i = 2
+        prices = 0
         Do While ExcelApp.ActiveSheet.Cells(i, 1).value <> ""
             nuevoMaterial.description = ExcelApp.ActiveSheet.Cells(i, 2).value
             nuevoMaterial.name = ExcelApp.ActiveSheet.Cells(i, 5).value
             nuevoMaterial.price = ExcelApp.ActiveSheet.Cells(i, 8).value
             nuevoMaterial.quotQuantity = ExcelApp.ActiveSheet.Cells(i, 7).value
-            Call addMaterial(nuevoMaterial)
-            i = i + 1
-        Loop
-        prices = 0
-        For Each mat In materials
-            prices = prices + (mat.price * mat.quantity)
-        Next mat
-       price = prices
-       
-    ElseIf isInvernadero Then
-            
-        ExcelApp.Workbooks.Open (Paths.pathFormaletas & "BOM_RT.xlsx")
-        i = 2
-        Do While ExcelApp.ActiveSheet.Cells(i, 1).value <> ""
-            nuevoMaterial.description = ExcelApp.ActiveSheet.Cells(i, 2).value
-            nuevoMaterial.name = ExcelApp.ActiveSheet.Cells(i, 2).value
-            'nuevoMaterial.price = ExcelApp.ActiveSheet.Cells(i, 8).value
-            nuevoMaterial.quotQuantity = ExcelApp.ActiveSheet.Cells(i, 4).value
+            prices = prices + ExcelApp.ActiveSheet.Cells(i, 8).value
             Call addMaterial(nuevoMaterial)
             i = i + 1
         Loop
         
+       price = prices
+       
+    ElseIf isInvernadero Then
+            
+        Dim cadena As String
+    
+    
+        If Not (Dir(Paths.pathFormaletas & "BOM_BT4.xlsx") = "") Then
+        
+        cadena = Paths.pathFormaletas & "BOM_BT4.xlsx"
+        
+        ElseIf Not (Dir(Paths.pathFormaletas & "BOM_BT7.xlsx") = "") Then
+        
+        cadena = Paths.pathFormaletas & "BOM_BT7.xlsx"
+        
+        ElseIf Not (Dir(Paths.pathFormaletas & "BOM_RC.xlsx") = "") Then
+        
+        cadena = Paths.pathFormaletas & "BOM_RC.xlsx"
+        
+        ElseIf Not (Dir(Paths.pathFormaletas & "BOM_RT.xlsx") = "") Then
+        
+        cadena = Paths.pathFormaletas & "BOM_RT.xlsx"
+        
+        End If
+        
+        
+        ExcelApp.Workbooks.Open (cadena)
+        i = 2
+        Do While ExcelApp.ActiveSheet.Cells(i, 1).value <> ""
+            nuevoMaterial.description = ExcelApp.ActiveSheet.Cells(i, 2).value
+            nuevoMaterial.name = ExcelApp.ActiveSheet.Cells(i, 2).value
+            nuevoMaterial.price = ExcelApp.ActiveSheet.Cells(i, 9).value
+            nuevoMaterial.quotQuantity = ExcelApp.ActiveSheet.Cells(i, 4).value
+            Call addMaterial(nuevoMaterial)
+            i = i + 1
+        Loop
+        price = ExcelApp.ActiveSheet.Cells(i, 9)
     End If
     
+    Call closeExcel
 
 End Sub
