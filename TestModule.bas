@@ -1,12 +1,14 @@
 Attribute VB_Name = "TestModule"
 Sub InMail1()
 
+
+    Dim body As String
+    'body = "{""formulario"":""formaleta"",""medidas"":{""unidades"":""mm"",""altura"":2000,""diametroInterno"":2000,""alturaRanura"":200},""opciones"":{""CP_0"":{""activado"":true,""texto"":""W16X26""},""RV_0_90"":{""activado"":true}},""datosUsuario"":{""nombre"":""diego"",""apellidos"":""rojas"",""email"":""icquirogac@unal.edu.co""}}"
+    body = "{""formulario"":""invernadero"",""medidas"":{""unidades"":""metros"",""tipo"":""rectangularCircular"",""ancho"":5,""largo"":5,""alto"":2},""datosUsuario"":{""nombre"":""DIego"",""apellidos"":""Rojas"",""email"":""icquirogac@unal.edu.co""}}"
+    
     Dim tiempo As New CalculateTime
     tiempo.StartTimer
-    Dim body As String
-    body = "{""formulario"":""formaleta"",""medidas"":{""unidades"":""mm"",""altura"":2000,""diametroInterno"":2000,""alturaRanura"":200},""opciones"":{""CP_0"":{""activado"":true,""texto"":""W16X26""},""RV_0_90"":{""activado"":true}},""datosUsuario"":{""nombre"":""diego"",""apellidos"":""rojas"",""email"":""icquirogac@unal.edu.co""}}"
-    'body = "{""formulario"":""invernadero"",""medidas"":{""unidades"":""metros"",""tipo"":""rectangularCircular"",""ancho"":5,""largo"":5,""alto"":2},""datosUsuario"":{""nombre"":""DIego"",""apellidos"":""Rojas"",""email"":""icquirogac@unal.edu.co""}}"
-    
+                
     Call closeInventor
     Call moveInvernaderoFiles(path & "Dropbox\Missing Files\")
     Call moveFormaletaFiles(path & "Dropbox\Missing Files\")
@@ -44,6 +46,7 @@ Sub InMail1()
             quot.producto.price = 5000000
                     ' To Do: Calculate price in product with materiales
             Call addExcel.pasarExcelInvernadero(invernadero)
+            Call actualizaPrecios
                     
         End If
                         
@@ -83,10 +86,10 @@ Sub InMail1()
         ElseIf quot.producto.is_Formaleta Then
             Call ExecFormaletas
         End If
-        MsgBox "TERMINO INVENTOR"
+        
         ' State 3, the files has been created
         quot.producto.addMaterials
-        
+        Call checkMaterials(quot.producto)
         quot.state = 3
         quot.time_response = tiempo.EndTimer
         If Not database.UpdateQuote(quot) Then
@@ -102,6 +105,10 @@ Sub InMail1()
         If Not database.UpdateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
         End If
+        If Not database.CreateMaterialProduct(quot.producto) Then
+            Debug.Print "No se creo cotizacion"
+        End If
+        
         
         Dim newDirectory As String
         newDirectory = path & "Dropbox\Cotizaciones\" & Year(Date) & "\" & getMonth & "\" & quot.cliente.firstName & "_" & quot.cliente.lastname & "_P" & quot.producto.id & "\"
@@ -388,11 +395,42 @@ Public Sub test()
 End Sub
 
 Sub testClient()
-      Dim database As New GraficaDB
-        Call database.ConnectDB(DBServer, schema, user, password)
-      
-        Call database.closeConectionDB
+Dim formaleta As New Formaletas
+    Call formaleta.InitFormaletas(10, 10, 10)
+    formaleta.aFPlate0 = "012354678910"
+    formaleta.cPlate0 = "012354678910"
+    formaleta.rVar0_90 = True
+    formaleta.rVar90_180 = True
+    formaleta.rVar180_270 = True
+    formaleta.rVar270_0 = True
+    Dim prodf As New Product
+    Call prodf.setFormaleta(formaleta)
+    prodf.price = 100000
     
+     Dim database As New GraficaDB
+        Call database.ConnectDB(DBServer, schema, user, password)
+
+    Dim test As Boolean
+    Call prodf.addMaterials
+    Dim materia As New Collection
+    Set materia = prodf.getAllMaterials
+    For Each item In materia
+        If Not database.checkMaterial(item.name) Then
+            'Generate purchase
+            item.min = 100
+            item.quantity = item.min * 10 ' define initial cuantity
+            test = database.CreateMaterial(item)
+        Else
+            'if item.Public quantity As Integer
+'Public quotQuantity As Integer}
+            If (item.quantity - item.quotQuantity) <= item.min Then
+                'Generate compra
+                quot.quantity_purch = 10000
+            End If
+            
+        End If
+    Next item
+    Call database.closeConectionDB
     
 End Sub
 

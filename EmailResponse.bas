@@ -1,12 +1,13 @@
 Attribute VB_Name = "EmailResponse"
 Public Sub InMail(mail As Outlook.MailItem)
-    Call closeInventor
-    Call moveInvernaderoFiles(path & "Dropbox\Missing Files")
-    Call moveFormaletaFiles(path & "Dropbox\Missing Files")
- 
+
     Dim tiempo As New CalculateTime
     tiempo.StartTimer
-        
+                
+    Call closeInventor
+    Call moveInvernaderoFiles(path & "Dropbox\Missing Files\")
+    Call moveFormaletaFiles(path & "Dropbox\Missing Files\")
+
     Dim objetoJson As Object
     Dim cliente As New Client
     Dim quot As New Quote
@@ -40,6 +41,7 @@ Public Sub InMail(mail As Outlook.MailItem)
             quot.producto.price = 5000000
                     ' To Do: Calculate price in product with materiales
             Call addExcel.pasarExcelInvernadero(invernadero)
+            Call actualizaPrecios
                     
         End If
                         
@@ -79,16 +81,22 @@ Public Sub InMail(mail As Outlook.MailItem)
         ElseIf quot.producto.is_Formaleta Then
             Call ExecFormaletas
         End If
-                
+        PauseTime = 10   ' Set duration.
+        Start = Timer    ' Set start time.
+        Do While Timer < Start + PauseTime
+        Loop
         ' State 3, the files has been created
         quot.producto.addMaterials
+        Call database.closeConectionDB
+        Call checkMaterials(quot.producto)
+        Call database.ConnectDB(DBServer, schema, user, password)
         quot.state = 3
         quot.time_response = tiempo.EndTimer
         If Not database.UpdateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
         End If
         
-        MsgBox ("e inventor qpaso?")
+        
         Call Mail_Quote(quot)
         
         ' State 4, the answer to the client has been sent
@@ -97,6 +105,10 @@ Public Sub InMail(mail As Outlook.MailItem)
         If Not database.UpdateQuote(quot) Then
             Debug.Print "No se creo cotizacion"
         End If
+        If Not database.CreateMaterialProduct(quot.producto) Then
+            Debug.Print "No se creo cotizacion"
+        End If
+        
         
         Dim newDirectory As String
         newDirectory = path & "Dropbox\Cotizaciones\" & Year(Date) & "\" & getMonth & "\" & quot.cliente.firstName & "_" & quot.cliente.lastname & "_P" & quot.producto.id & "\"
@@ -193,4 +205,89 @@ Sub moveInvernaderoFiles(newDirectory As String)
             Call moveFile(pathInvernaderos & "BOM_RC.xlsx", newDirectory & "BOM_RC.xlsx")
             Call moveFile(pathInvernaderos & "BOM_RT.xlsx", newDirectory & "BOM_RT.xlsx")
             ' ToDo : Move qote files
+End Sub
+Sub checkMaterials(ByVal producto As Product)
+    
+    Dim database As New GraficaDB
+    Call database.ConnectDB(DBServer, schema, user, password)
+    Dim purchase As New Purchases
+    purchase.provider_name = "gerente"
+    
+    Dim test As Boolean
+    'Call producto.addMaterials
+    Dim materia As New Collection
+    Set materia = producto.getAllMaterials
+    Dim temp As Material
+    For Each item In materia
+        Set temp = item
+        If Not database.checkMaterial(temp.name) Then
+            Call purchase.addMaterial(temp)
+            item.quantity = temp.quantity_purch
+            item.quantity_purch = 0
+            test = database.CreateMaterial(temp)
+        Else
+            temp.quantity = temp.quantity - temp.quotQuantity
+            Set temp = database.updateMaterial(temp)
+            If temp.quantity <= temp.min Then
+                Call purchase.addMaterial(temp)
+            End If
+            
+        End If
+    Next item
+    If purchase.existsMaterials Then
+        Set purchase = database.CreatePurchase(purchase)
+    End If
+    
+    Call soliMateriales(purchase)
+    Call Mail_Materiales(purchase)
+    Call database.closeConectionDB
+End Sub
+Sub Mail_Materiales(purchase As Purchases)
+    Dim OutApp As Object
+    Dim OutMail As Object
+    Set OutApp = CreateObject("Outlook.Application")   'Crea un objeto Outlook'
+    Set OutMail = OutApp.CreateItemFromTemplate(path & "materiales.oft")   'Mediante el objeto outlook crea un cuerpo de mensaje con el nombre de la plantilla que hayamos creado'
+    On Error Resume Next
+    With OutMail
+        .To = "icquirogac@unal.edu.co, dicrojasch@unal.edu.co"                   'Especifica el correo al que se envia la respuesta'
+        .Subject = "Solicitud Compra De Materiales"      'Especifica el asunto del correo'
+        .Attachments.Add ActiveWorkbook.FullName        'Adjunta el correo la informacion especificada anteriormente'
+        .Attachments.Add (path & "Dropbox\Compras\" & "compra" & purchase.id & ".pdf")
+        .Send                                                                           'envia el correo'
+    End With
+    
+    On Error GoTo 0
+    Set OutMail = Nothing
+    Set OutApp = Nothing
+End Sub
+Sub testmaterials()
+    Dim p As New Product
+    Dim Invern As New Invernaderos
+    Invern.alto = 2
+    Invern.ancho = 2
+    Invern.largo = 2
+    Invern.tipo = "piramide"
+    Dim formaleta As New Formaletas
+    Call formaleta.InitFormaletas(10, 10, 10)
+    formaleta.aFPlate0 = "012354678910"
+    formaleta.cPlate0 = "012354678910"
+    formaleta.cPlate90 = "012354678910"
+    formaleta.cPlate180 = "012354678910"
+    formaleta.cPlate270 = "012354678910"
+    formaleta.aFPlate0 = "012354678910"
+    formaleta.aFPlate45 = "012354678910"
+    formaleta.aFPlate90 = "012354678910"
+    formaleta.aFPlate135 = "012354678910"
+    formaleta.aFPlate180 = "012354678910"
+    formaleta.aFPlate225 = "012354678910"
+    formaleta.aFPlate270 = "012354678910"
+    formaleta.aFPlate315 = "012354678910"
+    formaleta.rVar0_90 = True
+    formaleta.rVar90_180 = True
+    formaleta.rVar180_270 = True
+    formaleta.rVar270_0 = True
+    Call p.setInvernadero(Invern)
+    p.addMaterials
+    Call checkMaterials(p)
+
 End Sub

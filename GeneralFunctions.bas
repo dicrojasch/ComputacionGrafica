@@ -98,16 +98,19 @@ End Sub
 Sub actualizaPrecios()
     Dim ExcelApp As Excel.Application
     Set ExcelApp = New Excel.Application
+    Dim database As New GraficaDB
+    Call database.ConnectDB(DBServer, schema, user, password)
     ExcelApp.Workbooks.Open (pathInvernaderos & "Precios.xlsx")
     With ExcelApp.ActiveSheet
-        .Cells(2, 3).value = 123 'BASE DE DATOS
-        .Cells(3, 3).value = 123
-        .Cells(4, 3).value = 123
-        .Cells(5, 3).value = 123
-        .Cells(6, 3).value = 123
-        .Cells(7, 3).value = 123
+        .Cells(2, 3).value = database.getMaterial("precioTC2218").price
+        .Cells(3, 3).value = database.getMaterial("precioT10133").price
+        .Cells(4, 3).value = database.getMaterial("precioBR141").price
+        .Cells(5, 3).value = database.getMaterial("precioVidrio10").price
+        .Cells(6, 3).value = database.getMaterial("precioVidrio2").price
+        .Cells(7, 3).value = database.getMaterial("precioM525").price
     End With
     ExcelApp.ActiveWorkbook.Close (1)
+    Call database.closeConectionDB
 End Sub
 Sub moveFile(sourceFile, targetFile)
     Set FSO = CreateObject("Scripting.FileSystemObject")

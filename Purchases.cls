@@ -61,7 +61,7 @@ Public Function toString() As String
     toString = "Materiales:" & vbCrLf
     If materials.Count > 0 Then
         For Each item In materials.Items
-            toString = toString & item.name & " : " & item.quantity_purch & vbCrLf
+            toString = toString & item.name & vbCrLf
         Next item
     Else
         toString = toString & "No hay materiales asociados" & vbCrLf

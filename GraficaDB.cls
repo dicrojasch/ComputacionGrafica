@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+
 Private GraficaConnect As ADODB.Connection
 
 
@@ -113,10 +114,9 @@ Public Function CreateProduct(product1 As Product) As Product
         records.Close
         Set records = Nothing
         product1.id = getLastProductId()
-        
-        If Not CreateMaterialProduct(product1) Then
-            Debug.Print "Error al crear producto: el producto no tiene materiales"
-        End If
+'        If Not CreateMaterialProduct(product1) Then
+'            Debug.Print "Error al crear producto: el producto no tiene materiales"
+'        End If
         Set CreateProduct = product1
     Else
         Debug.Print "No hay conexion con la base de datos."
@@ -148,7 +148,7 @@ Public Function checkProduct(product1 As Product) As Boolean
     End If
 End Function
 
-Private Function CreateMaterialProduct(product1 As Product) As Boolean
+Public Function CreateMaterialProduct(product1 As Product) As Boolean
     If checkConnect Then
         If checkProduct(product1) Then
             Dim query As String
@@ -163,7 +163,7 @@ Private Function CreateMaterialProduct(product1 As Product) As Boolean
                         records.AddNew
                         records!product_id = product1.id
                         records!material_name = mat.name
-                        records!quantity = mat.quotQuantity
+                        records!quantity = mat.quantityQuote
                         records.Update
                         records.Close
                         Set records = Nothing
@@ -289,7 +289,7 @@ Public Function getMaterial(name As String) As Material
             getMaterial.description = answer(1, 0)
             getMaterial.price = answer(2, 0)
             getMaterial.quantity = answer(3, 0)
-            'ToDo : getMaterial.min = answer(4, 0)
+            getMaterial.min = answer(4, 0)
         End If
         records.Close
         Set records = Nothing
@@ -298,8 +298,8 @@ Public Function getMaterial(name As String) As Material
     End If
 End Function
 
-Private Function addQuantityMat(mat As Material) As Material
-    Set addQuantityMat = mat
+Public Function updateMaterial(ByVal mat As Material) As Material
+    Set updateMaterial = mat
     If checkConnect Then
         If mat.updateQuantity Then
             Dim query As String
@@ -307,9 +307,11 @@ Private Function addQuantityMat(mat As Material) As Material
             Set records = New ADODB.Recordset
             records.Open query, GraficaConnect, adOpenDynamic, adLockOptimistic
             If Not records.EOF Then
+                records!description = mat.description
                 records!quantity = mat.quantity
+                records!min = mat.min
                 records.Update
-                Set addQuantityMat = mat
+                Set updateMaterial = mat
             End If
             records.Close
             Set records = Nothing
@@ -332,6 +334,10 @@ Public Function CreateMaterial(mat As Material) As Boolean
             records!description = mat.description
             records!price = mat.price
             records!quantity = mat.quantity
+            If mat.min = 0 Then
+                mat.min = 1000
+            End If
+            records!min = mat.min
             records.Update
             records.Close
             Set records = Nothing
@@ -369,7 +375,7 @@ Public Function getProvider(name As String) As Provider
         Dim query As String
         Dim answer As Variant
         Set records = New ADODB.Recordset
-        query = "Select * from material where name = '" & name & "';"
+        query = "Select * from provider where name = '" & name & "';"
         records.Open query, GraficaConnect, adOpenDynamic
         If Not records.EOF Then
             answer = records.GetRows()
@@ -422,7 +428,7 @@ Public Function CreatePurchase(purchase As Purchases) As Purchases
             records!provider_name = purchase.provider_name
             records!description = purchase.description
             records!Date = Date$
-            records!total_price = purchase.getTotalPrice()
+            'records!total_price = purchase.getTotalPrice()
             records.Update
             records.Close
             Set records = Nothing
@@ -430,14 +436,14 @@ Public Function CreatePurchase(purchase As Purchases) As Purchases
             If Not CreatePurchaseMaterial(purchase) Then
                 Debug.Print "Error al crear compra: No se pudo asociar la compra con materiales"
             End If
-            CreatePurchase = purchase
+            Set CreatePurchase = purchase
         Else
             Debug.Print "Error al crear compra: No se ha creado el proveedor o no hay materiales en la compra."
-            CreatePurchase = Nothing
+            Set CreatePurchase = Nothing
         End If
     Else
         Debug.Print "No hay conexion con la base de datos."
-        CreatePurchase = Nothing
+        Set CreatePurchase = Nothing
     End If
 End Function
 
@@ -455,7 +461,7 @@ Public Function checkPurchase(purchase As Purchases) As Boolean
             requirements = requirements And purchase.id = answer(0, 0)
             requirements = requirements And purchase.provider_name = answer(1, 0)
             requirements = requirements And purchase.description = answer(2, 0)
-            requirements = requirements And purchase.getTotalPrice = answer(4, 0)
+            'requirements = requirements And purchase.getTotalPrice = answer(4, 0)
             checkPurchase = requirements
         Else
             checkPurchase = False
@@ -503,7 +509,7 @@ Private Function CreatePurchaseMaterial(purchase As Purchases) As Boolean
                     records.Update
                     records.Close
                     Set records = Nothing
-                    Set tmpMaterial = addQuantityMat(tmpMaterial)
+                    Set tmpMaterial = updateMaterial(tmpMaterial)
                 Next i
                 CreatePurchaseMaterial = True
             Else
@@ -520,3 +526,4 @@ Private Function CreatePurchaseMaterial(purchase As Purchases) As Boolean
         CreatePurchaseMaterial = False
     End If
 End Function
+

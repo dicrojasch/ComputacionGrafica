@@ -95,17 +95,17 @@ Private Sub SearchReplace(search As String, replace As String, WordApp As Word.A
     Call FindObject.Execute(replace:=Word.WdReplace.wdReplaceAll)
 End Sub
 
-Sub ShowSelection(purchase As Purchases)
+Sub soliMateriales(purchase As Purchases)
 
     Dim WordApp As Word.Application
     Set WordApp = New Word.Application
-    WordApp.Documents.Open (path & "Plantilla Pedir Materiales.dotm")
+    WordApp.Documents.Add (path & "Plantilla Pedir Materiales.dotm")
     
     Call SearchReplace("<<fecha>>", getDate(), WordApp)
-    Call SearchReplace("<<proveedor>>", purchase.provider_name, WordApp)
-    Call SearchReplace("<<materiales>>", purchase.toString, WordApp)
-    
-    WordApp.ActiveDocument.SaveAs2 (path & "compra" & purchase.id & ".docx")
+    Call stringWord1(WordApp, purchase.toString)
+
+    WordApp.ActiveDocument.SaveAs2 FileName:=path & "Dropbox\Compras\" & "compra" & purchase.id, FileFormat:=wdFormatPDF
+    WordApp.ActiveDocument.Saved = True
     WordApp.Quit
     
 End Sub
@@ -123,7 +123,7 @@ Sub wordCotizacion(quot As Quote)
     ' TO DO funcion para calcular product.price
     WordApp.Visible = True
     
-    WordApp.ActiveDocument.SaveAs2 FileName:=path & "cotizacion" & quot.producto.id, FileFormat:=wdFormatPDF
+    WordApp.ActiveDocument.SaveAs2 FileName:=path & "Dropbox\Compras\" & "cotizacion" & quot.producto.id, FileFormat:=wdFormatPDF
     WordApp.ActiveDocument.Saved = True
     
     WordApp.Quit
@@ -133,5 +133,13 @@ Sub stringWord(WordApp As Word.Application, toString As String)
     
     WordApp.Selection.Move 2, 68
     WordApp.Visible = True
+    WordApp.Selection.TypeText (toString)
+End Sub
+Sub stringWord1(WordApp As Word.Application, toString As String) '
+    
+    WordApp.Selection.Move 2, 44
+    
+    WordApp.Visible = True
+    
     WordApp.Selection.TypeText (toString)
 End Sub
